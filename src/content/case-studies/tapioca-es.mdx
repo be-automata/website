@@ -1,0 +1,47 @@
+---
+caseSlug: tapioca
+lang: es
+title: tapioca.money
+tagline: Optimizador autónomo de rendimientos DeFi en Base — un agente AI moviendo dinero real, con autoridad acotada y simulación antes de ejecutar.
+stack:
+  - Next.js 15 · React 19
+  - Privy · ZeroDev SDK v5
+  - Viem v2 · Base mainnet
+  - Drizzle ORM + Neon Postgres
+  - Redis — rate limiting, locks distribuidos
+  - Vitest + fast-check
+license: BUSL 1.0 → Apache 2.0 (2029-02-09)
+liveUrl: https://tapioca.money
+order: 2
+---
+
+## El diagnóstico
+
+> *"Un agente autónomo moviendo fondos de usuarios a través de protocolos DeFi tiene que responder una pregunta antes que cualquier otra: **cuando esto falle, ¿cuál es el radio de impacto?**"*
+
+Optimizar rendimientos es un caso ideal para la autonomía — los vaults publican APYs, el rebalanceo es repetitivo, y los usuarios no quieren cuidar posiciones. Pero darle las llaves de una wallet a un agente *es* el problema. Los tutoriales genéricos de "frameworks de agentes" se saltan la parte en la que el agente toca dinero que no es suyo.
+
+## Qué estructuramos
+
+Un modelo de **autoridad acotada** en lugar de un permiso general:
+
+- **Session keys de ZeroDev Kernel V3** — acotadas por token, con límites por activo de approve/transfer y expiración a 7 días
+- **Un registro `SUPPORTED_TOKENS`** — el artefacto único que define qué puede tocar el agente (USDC, WETH, cbBTC, EURC) y bajo qué techos
+- **Simulación antes de ejecutar** — toda transacción del agente se simula on-chain antes de ser patrocinada
+- **Revocable en cualquier momento** — el usuario puede matar la autoridad del agente desde la UI, sin llamar a soporte
+- **Cifrado AES-256-GCM** para el almacenamiento de session keys · rate limits en Redis · locks distribuidos para la seguridad del cron
+
+El agente no *"tiene acceso a la wallet"*. Tiene acceso a una porción estrecha, expirable, simulada, limitada y revocable de ella — y el registro es el lugar que cualquiera puede leer para saber exactamente cuál es esa porción.
+
+## Qué shippeamos
+
+- **Optimizador autónomo multi-activo** en Base — USDC, WETH, cbBTC, EURC a través de Morpho, YO Protocol, Aave, Moonwell
+- **Ruta dual de wallets** — EIP-7702 para wallets embebidas de Privy, ERC-4337 para wallets externas (MetaMask, Coinbase), con feature flag para fallback elegante
+- **UX sin gas** — Bundler + Paymaster patrocinan toda operación del usuario
+- **Cron diario** — 50 usuarios por batch, concurrencia de 10, con endpoint `/api/agent/health` que reporta estado de DB, bundler, vaults, y métricas del agente
+- **Audit trail completo** — el feed de actividad muestra al usuario cada acción del agente, no solo el resultado
+- **Diseño con gusto** — Quicksand + paleta milktea/pearl/matcha; un producto DeFi que no parece terminal de Bloomberg
+
+## Qué demuestra
+
+Los agentes autónomos no fallan porque el LLM sea tonto. Fallan porque la *frontera de autoridad* nunca se escribió. El registro de session keys de Tapioca y el pipeline de sim-before-execute es lo que realmente se ve *"IA en producción con dinero en juego"*.

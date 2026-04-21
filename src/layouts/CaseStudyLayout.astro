@@ -1,0 +1,201 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import ContactCTA from '@components/ContactCTA.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  tagline: string;
+  stack: string[];
+  license: string;
+  repoUrl?: string;
+  liveUrl?: string;
+  lang: Lang;
+  pathname: string;
+}
+
+const { title, tagline, stack, license, repoUrl, liveUrl, lang, pathname } = Astro.props;
+
+const strings = lang === 'es'
+  ? {
+      back: '← Volver a casos',
+      meta: 'Stack',
+      license: 'Licencia',
+      repo: 'Repositorio',
+      live: 'En vivo',
+      cta: {
+        heading: '¿Tu caso tiene el mismo perfil?',
+        steps: [
+          { title: 'Agenda una llamada', body: '30 minutos. Evaluamos tu caso, te damos un timeline y una arquitectura realista.' },
+          { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, stack elegido y por qué.' },
+          { title: 'Empezamos', body: 'Primer deploy en menos de 4 semanas desde el kickoff.' },
+        ],
+        primary: { label: 'Agendar llamada de descubrimiento', href: 'mailto:hello@beautomata.com?subject=Llamada%20de%20descubrimiento' },
+        secondary: { label: 'Ver otros casos', href: '/casos' },
+        footnote: 'Sin pitch, sin compromiso.',
+      },
+      casesBack: '/casos',
+    }
+  : {
+      back: '← Back to cases',
+      meta: 'Stack',
+      license: 'License',
+      repo: 'Repo',
+      live: 'Live',
+      cta: {
+        heading: 'Does your case have the same shape?',
+        steps: [
+          { title: 'Book a call', body: '30 minutes. We assess your use case and give you a realistic timeline and architecture.' },
+          { title: 'Technical proposal', body: 'Within 5 days of the call. Architecture, phases, costs, stack chosen and why.' },
+          { title: 'We start', body: 'First deploy in under 4 weeks from kickoff.' },
+        ],
+        primary: { label: 'Book a discovery call', href: 'mailto:hello@beautomata.com?subject=Discovery%20call' },
+        secondary: { label: 'See other cases', href: '/en/cases' },
+        footnote: 'No pitch, no commitment.',
+      },
+      casesBack: '/en/cases',
+    };
+---
+
+<BaseLayout
+  lang={lang}
+  pathname={pathname}
+  title={`${title} — Automata`}
+  description={tagline}
+>
+  <article class="section">
+    <div class="shell max-w-3xl">
+      <a href={strings.casesBack} class="t-caption text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-ink)] mb-10 inline-block">
+        {strings.back}
+      </a>
+
+      <h1 class="h-display mb-6 text-balance">{title}</h1>
+      <p class="t-lead mb-12 text-pretty">{tagline}</p>
+
+      <div class="grid grid-cols-1 md:grid-cols-[1fr_1fr_1fr] gap-6 mb-16 border-y border-[color:var(--color-border-subtle)] py-6">
+        <div>
+          <div class="label-upper tracking-upper text-[color:var(--color-ink-muted)] mb-2">
+            {strings.meta}
+          </div>
+          <ul class="t-caption space-y-1">
+            {stack.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+        <div>
+          <div class="label-upper tracking-upper text-[color:var(--color-ink-muted)] mb-2">
+            {strings.license}
+          </div>
+          <p class="t-caption">{license}</p>
+        </div>
+        <div class="flex flex-col gap-2">
+          {
+            repoUrl && (
+              <a href={repoUrl} target="_blank" rel="noopener" class="t-caption inline-flex items-center gap-2 hover:underline">
+                {strings.repo} <span aria-hidden="true">→</span>
+              </a>
+            )
+          }
+          {
+            liveUrl && (
+              <a href={liveUrl} target="_blank" rel="noopener" class="t-caption inline-flex items-center gap-2 hover:underline">
+                {strings.live} <span aria-hidden="true">→</span>
+              </a>
+            )
+          }
+        </div>
+      </div>
+
+      <div class="prose-custom">
+        <slot />
+      </div>
+    </div>
+  </article>
+
+  <ContactCTA {...strings.cta} id="contacto" />
+</BaseLayout>
+
+<style>
+  .prose-custom :global(h2) {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--text-section);
+    line-height: var(--text-section--line-height);
+    letter-spacing: -0.4px;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+  .prose-custom :global(h3) {
+    font-family: var(--font-display);
+    font-weight: 300;
+    font-size: var(--text-card);
+    line-height: var(--text-card--line-height);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  .prose-custom :global(p) {
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    letter-spacing: var(--text-body--letter-spacing);
+    color: var(--color-ink-secondary);
+    margin-bottom: 1.25rem;
+  }
+  .prose-custom :global(blockquote) {
+    border-left: 2px solid var(--color-stone);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: var(--color-ink);
+  }
+  .prose-custom :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 1.25rem;
+  }
+  .prose-custom :global(ul li) {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    color: var(--color-ink-secondary);
+  }
+  .prose-custom :global(ul li::before) {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    font-family: var(--font-mono);
+    color: var(--color-ink-muted);
+  }
+  .prose-custom :global(code) {
+    font-family: var(--font-mono);
+    font-size: var(--text-code);
+    background: var(--color-canvas-soft);
+    padding: 0.1rem 0.35rem;
+    border-radius: 4px;
+  }
+  .prose-custom :global(pre) {
+    background: var(--color-canvas-soft);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    box-shadow: var(--shadow-inset-edge);
+  }
+  .prose-custom :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+  .prose-custom :global(strong) {
+    color: var(--color-ink);
+    font-weight: 500;
+  }
+  .prose-custom :global(em) {
+    font-style: italic;
+  }
+  .prose-custom :global(a) {
+    color: var(--color-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 3px;
+  }
+</style>

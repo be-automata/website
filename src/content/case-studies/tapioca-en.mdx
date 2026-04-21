@@ -1,0 +1,47 @@
+---
+caseSlug: tapioca
+lang: en
+title: tapioca.money
+tagline: Autonomous DeFi yield optimizer on Base — an AI agent moving real money, with scoped authority and simulation-before-execute.
+stack:
+  - Next.js 15 · React 19
+  - Privy · ZeroDev SDK v5
+  - Viem v2 · Base mainnet
+  - Drizzle ORM + Neon Postgres
+  - Redis — rate limiting, distributed locks
+  - Vitest + fast-check
+license: BUSL 1.0 → Apache 2.0 (2029-02-09)
+liveUrl: https://tapioca.money
+order: 2
+---
+
+## The diagnosis
+
+> *"An autonomous agent moving user funds across DeFi protocols has to answer one question before anything else: **when this goes wrong, what's the blast radius?**"*
+
+Yield optimization is a great fit for autonomy — vaults publish APYs, rebalancing is repetitive, users don't want to babysit positions. But handing an agent the keys to a wallet *is* the problem. Generic *"agent framework"* tutorials skip the part where the agent touches money that doesn't belong to it.
+
+## What we structured
+
+A **scoped-authority model** instead of a blanket permission:
+
+- **ZeroDev Kernel V3 session keys** — scoped per token, with per-asset approve/transfer caps and 7-day expiry
+- **A `SUPPORTED_TOKENS` registry** — the single artifact that defines what the agent is allowed to touch (USDC, WETH, cbBTC, EURC) and under what ceilings
+- **Simulate before execute** — every agent transaction is simulated on-chain before it's sponsored
+- **Revocable at any time** — users can kill the agent's authority from the UI without calling support
+- **AES-256-GCM encryption** for session key storage · Redis-backed rate limits · distributed locks for cron safety
+
+The agent doesn't *"have access to the wallet."* It has access to a narrow, expiring, simulated, rate-limited, revocable slice of it — and the registry is the place anyone can read to know exactly what that slice is.
+
+## What we shipped
+
+- **Multi-asset autonomous yield optimizer** on Base — USDC, WETH, cbBTC, EURC across Morpho, YO Protocol, Aave, Moonwell
+- **Dual wallet path** — EIP-7702 for Privy embedded wallets, ERC-4337 for external wallets (MetaMask, Coinbase), with a feature flag for graceful fallback
+- **Gasless UX** — Bundler + Paymaster sponsor every user operation
+- **Daily cron** — 50 users per batch, concurrency 10, with a `/api/agent/health` endpoint returning DB, bundler, vault, and agent-metrics status
+- **Full audit trail** — activity feed surfaces every agent action to the user, not just the outcome
+- **Design with taste** — Quicksand + a milktea/pearl/matcha palette; a DeFi product that doesn't look like a Bloomberg terminal
+
+## What this proves
+
+Autonomous agents don't fail because the LLM is dumb. They fail because the *authority boundary* was never written down. Tapioca's session-key registry and sim-before-execute pipeline is what *"production AI with money on the line"* actually looks like.

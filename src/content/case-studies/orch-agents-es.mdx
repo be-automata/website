@@ -1,0 +1,74 @@
+---
+caseSlug: orch-agents
+lang: es
+title: orch-agents
+tagline: De enrutamiento tribal a legibilidad como infraestructura — un agente orchestator para repos de GitHub y tableros de Linear.
+stack:
+  - TypeScript
+  - Claude Agent SDK
+  - Fastify
+  - GitHub App
+  - Linear Agent API
+  - git worktrees
+license: MIT
+repoUrl: https://github.com/be-automata/orch-agents
+order: 1
+---
+
+## El diagnóstico
+
+> *"Todo desarrollador tiene conocimiento tribal sobre qué agente debería encargarse de qué tarea. Vive en una sola cabeza — y se rompe en el momento que el trabajo escala más allá de esa cabeza."*
+
+Un repositorio de GitHub con issues, PRs, CI y un tablero de Linear genera decenas de decisiones al día: *revisa este PR, arregla este bug, investiga este fallo de CI, audita este label de seguridad.* Para la mayoría de equipos, ese enrutamiento vive en hilos de Slack y memoria muscular. Los asistentes de IA empeoraron el problema — ahora todos tienen **más** decisiones, no menos, y nadie puede describir *por qué* un agente fue el indicado para cierta tarea.
+
+## Qué estructuramos
+
+Un solo archivo: `WORKFLOW.md`.
+
+Un bloque YAML que hace el enrutamiento legible para humanos *y* para máquinas:
+
+```yaml
+templates:
+  tdd-workflow:   [coder, tester]
+  feature-build:  [architect, coder, reviewer]
+  security-audit: [security-architect]
+
+github:
+  events:
+    pull_request.opened:     github-ops
+    issues.labeled.bug:      tdd-workflow
+    workflow_run.failure:    quick-fix
+
+agents:
+  routing:
+    bug:      tdd-workflow
+    feature:  feature-build
+    security: security-audit
+    default:  quick-fix
+```
+
+Todo lo que la organización sabe sobre *"qué agente corre ante qué señal"* ahora vive en un artefacto commitable, revisable, diffable. **Tribal → legible en un solo archivo.**
+
+## Qué shippeamos
+
+- **18+ definiciones de agentes incluidas** — coder, reviewer, architect, security-architect, tester, y más
+- **Aislamiento por worktree** — cada agente corre en su propio git worktree, sin contaminación cruzada
+- **Puerta de revisión** — todo cambio pasa por revisión automatizada de código, tests y security scan antes de commit
+- **Soporte dual de trackers** — webhooks de GitHub + API nativa de Agentes de Linear (usando `createAgentActivity`, no `createComment`)
+- **Runtime orientado a seguridad** — stream de permisos NDJSON, compactación de conversación, reintentos ante sobrecarga, comando `stop` desde cualquier PR o issue
+- **Superficie de librería** — se distribuye como servicio *y* como librería TypeScript tipada, con 6 subpath exports
+
+## Evidencia
+
+De v0.2.0 a v0.4.0 en cuatro semanas. Entre otros hitos:
+
+- Enrutamiento basado en skills reemplazó ramificación hardcodeada
+- Dispatch unificado consolidó tres rutas en una — cero código muerto
+- `WORKFLOW.md` se volvió la única fuente de verdad, sin fallbacks a variables de entorno
+- Tipos branded (PlanId, WorkItemId, ExecId, AgentSessionId) con findings de auditoría aplicados
+
+El changelog y los commits están públicos — no hay que confiar en mi palabra.
+
+## Qué demuestra
+
+Si ya shippeaste algo con Cursor, Bolt o Lovable y estás a un incidente de *"¿qué agente hizo qué?"* de perder confianza en tu código, esto es cómo se ve la **legibilidad como infraestructura**. No una metodología — un archivo que cualquiera puede leer.
