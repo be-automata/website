@@ -6,7 +6,7 @@ interface Tier {
   diagnosis: string;
   deliverable: string;
   duration: string;
-  price: string;
+  price?: string;
 }
 
 interface Props {
@@ -67,14 +67,18 @@ const {
                 <p class="t-body max-w-prose">{tier.deliverable}</p>
               </div>
 
-              {/* Duration + price */}
+              {/* Duration (+ optional price) */}
               <div class="md:pl-8 md:border-l md:border-[color:var(--color-border-subtle)] md:text-right flex md:flex-col gap-3 md:gap-2 items-baseline md:items-end col-span-2 md:col-span-1">
                 <div class="label-upper label-upper-dark">
                   {tier.duration}
                 </div>
-                <div class="t-mono text-[color:var(--color-ink)]" style="font-size: 1.0625rem;">
-                  {tier.price}
-                </div>
+                {
+                  tier.price && (
+                    <div class="t-mono text-[color:var(--color-ink)]" style="font-size: 1.0625rem;">
+                      {tier.price}
+                    </div>
+                  )
+                }
               </div>
             </div>
           </li>
