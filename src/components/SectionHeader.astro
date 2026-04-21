@@ -1,0 +1,29 @@
+---
+interface Props {
+  index: string;
+  label: string;
+  title: string;
+  titleHtml?: string;
+  lead?: string;
+}
+
+const { index, label, title, titleHtml, lead } = Astro.props;
+---
+
+<header class="shell max-w-4xl mb-16 reveal">
+  <div class="section-index mb-8">
+    <span>{index}</span>
+    <span>·</span>
+    <span>{label}</span>
+  </div>
+
+  {
+    titleHtml ? (
+      <h2 class="h-section mb-6" set:html={titleHtml} />
+    ) : (
+      <h2 class="h-section mb-6">{title}</h2>
+    )
+  }
+
+  {lead && <p class="t-lead">{lead}</p>}
+</header>

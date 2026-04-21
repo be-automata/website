@@ -1,0 +1,90 @@
+---
+interface Props {
+  eyebrow?: string;
+  sectionIndex?: string;
+  status?: string;
+  title: string;
+  titleHtml?: string;
+  lead: string;
+  primaryCta: { label: string; href: string };
+  secondaryCta?: { label: string; href: string };
+  microline?: string;
+  variant?: 'hero' | 'page';
+}
+
+const {
+  eyebrow,
+  sectionIndex,
+  status,
+  title,
+  titleHtml,
+  lead,
+  primaryCta,
+  secondaryCta,
+  microline,
+  variant = 'hero',
+} = Astro.props;
+
+const headingClass = variant === 'hero' ? 'h-hero' : 'h-display';
+---
+
+<section class="relative section overflow-hidden">
+  <div class="grid-overlay" aria-hidden="true"></div>
+
+  <div class="shell relative">
+    <div class="max-w-5xl">
+      {
+        status && (
+          <div class="status-dot mb-8">
+            <span>{status}</span>
+          </div>
+        )
+      }
+      {
+        sectionIndex && !status && (
+          <div class="section-index mb-10">
+            <span>{sectionIndex}</span>
+          </div>
+        )
+      }
+      {
+        eyebrow && !sectionIndex && !status && (
+          <div class="label-upper mb-8">{eyebrow}</div>
+        )
+      }
+
+      {
+        titleHtml ? (
+          <h1 class={`${headingClass} mb-8`} set:html={titleHtml} />
+        ) : (
+          <h1 class={`${headingClass} mb-8`}>{title}</h1>
+        )
+      }
+
+      <p class="t-lead max-w-2xl mb-12">{lead}</p>
+
+      <div class="flex flex-wrap items-center gap-3">
+        <a href={primaryCta.href} class="btn-warm">
+          {primaryCta.label}
+          <span aria-hidden="true" class="arrow">→</span>
+        </a>
+        {
+          secondaryCta && (
+            <a href={secondaryCta.href} class="btn-pill-light">
+              {secondaryCta.label}
+              <span aria-hidden="true" class="arrow">→</span>
+            </a>
+          )
+        }
+      </div>
+
+      {
+        microline && (
+          <p class="mt-14 t-caption t-mono">
+            {microline}
+          </p>
+        )
+      }
+    </div>
+  </div>
+</section>

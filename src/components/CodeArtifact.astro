@@ -1,0 +1,67 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+  index?: string;
+  label?: string;
+  heading: string;
+  headingHtml?: string;
+  lead?: string;
+  filename: string;
+  lang?: 'yaml' | 'sh' | 'ts';
+  code: string;
+  caption?: string;
+}
+
+const { index = '04', label = 'Artefacto', heading, headingHtml, lead, filename, lang = 'yaml', code, caption } = Astro.props;
+
+/*
+ * Very light syntax sugar: we wrap keywords, strings, numbers, comments.
+ * Not a real lexer — just enough visual rhythm for marketing copy.
+ */
+function highlight(source: string, language: string): string {
+  const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+  if (language === 'yaml') {
+    return escape(source)
+      .replace(/(^|\n)(\s*)(#[^\n]*)/g, (_, a, b, c) => `${a}${b}<span class="cm">${c}</span>`)
+      .replace(/(^|\n)(\s*)([A-Za-z0-9_.-]+)(:)/g, (_, a, b, c, d) => `${a}${b}<span class="ky">${c}</span>${d}`)
+      .replace(/(\[[^\]]+\])/g, (m) => `<span class="str">${m}</span>`);
+  }
+  if (language === 'sh') {
+    return escape(source)
+      .replace(/(^|\n)(\s*)(#[^\n]*)/g, (_, a, b, c) => `${a}${b}<span class="cm">${c}</span>`)
+      .replace(/(\$\s*)([a-z][a-z0-9-]*)/gi, (_, a, b) => `${a}<span class="kw">${b}</span>`);
+  }
+  return escape(source);
+}
+
+const highlighted = highlight(code, lang);
+---
+
+<section class="section section-soft">
+  <SectionHeader
+    index={index}
+    label={label}
+    title={heading}
+    titleHtml={headingHtml}
+    lead={lead}
+  />
+
+  <div class="shell max-w-4xl">
+    <div class="code-block reveal" role="figure" aria-label={filename}>
+      <div class="code-block-header">
+        <span>{filename}</span>
+      </div>
+      <pre><code set:html={highlighted} /></pre>
+    </div>
+
+    {
+      caption && (
+        <p class="t-caption mt-5 max-w-2xl">
+          {caption}
+        </p>
+      )
+    }
+  </div>
+</section>

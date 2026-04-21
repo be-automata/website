@@ -1,0 +1,83 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Case {
+  title: string;
+  tagline: string;
+  problem: string;
+  solution: string;
+  status: string;
+  href: string;
+}
+
+interface Props {
+  index?: string;
+  label?: string;
+  heading: string;
+  headingHtml?: string;
+  lead?: string;
+  cases: Case[];
+  hideSectionHeader?: boolean;
+}
+
+const {
+  index = '03',
+  label = 'Casos',
+  heading,
+  headingHtml,
+  lead,
+  cases,
+  hideSectionHeader = false,
+} = Astro.props;
+---
+
+<section class="section">
+  {
+    !hideSectionHeader && (
+      <SectionHeader
+        index={index}
+        label={label}
+        title={heading}
+        titleHtml={headingHtml}
+        lead={lead}
+      />
+    )
+  }
+
+  <div class="shell">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+      {
+        cases.map((c, i) => (
+          <a href={c.href} class="card card-hoverable group block h-full relative overflow-hidden reveal">
+            <div class="flex items-center justify-between mb-8">
+              <div class="label-upper t-mono">
+                {c.status}
+              </div>
+              <span class="t-mono text-[color:var(--color-ink-muted)]">
+                0{i + 1}
+              </span>
+            </div>
+            <h3 class="h-card mb-4 text-balance">{c.title}</h3>
+            <p class="t-lead mb-8 max-w-md">{c.tagline}</p>
+
+            <dl class="space-y-4 mb-10 pt-6 border-t border-[color:var(--color-border-subtle)]">
+              <div class="grid grid-cols-[5.5rem_1fr] gap-4 items-baseline">
+                <dt class="label-upper">Problema</dt>
+                <dd class="t-body" style="font-size: 0.9375rem;">{c.problem}</dd>
+              </div>
+              <div class="grid grid-cols-[5.5rem_1fr] gap-4 items-baseline">
+                <dt class="label-upper">Solución</dt>
+                <dd class="t-body" style="font-size: 0.9375rem;">{c.solution}</dd>
+              </div>
+            </dl>
+
+            <span class="t-caption inline-flex items-center gap-2 text-[color:var(--color-ink)]">
+              <span>Leer caso</span>
+              <span aria-hidden="true" class="arrow">→</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

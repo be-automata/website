@@ -1,0 +1,37 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+  index?: string;
+  label?: string;
+  heading: string;
+  headingHtml?: string;
+  items: string[];
+}
+
+const { index = '04', label = 'Restricciones', heading, headingHtml, items } = Astro.props;
+---
+
+<section class="section">
+  <SectionHeader
+    index={index}
+    label={label}
+    title={heading}
+    titleHtml={headingHtml}
+  />
+
+  <div class="shell max-w-3xl">
+    <ul class="space-y-0">
+      {
+        items.map((item, i) => (
+          <li class="reveal flex gap-6 items-start t-body py-6 border-t border-[color:var(--color-border-subtle)] last:border-b">
+            <span class="t-mono text-[color:var(--color-ink-muted)] mt-1 min-w-[2.5rem]">
+              0{i + 1}
+            </span>
+            <span class="text-balance">{item}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>

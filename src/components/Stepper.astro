@@ -1,0 +1,65 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Step {
+  label: string;
+  title: string;
+  body: string;
+}
+
+interface Props {
+  index?: string;
+  headerLabel?: string;
+  heading: string;
+  headingHtml?: string;
+  principle?: string;
+  steps: Step[];
+}
+
+const {
+  index = '02',
+  headerLabel = 'Proceso',
+  heading,
+  headingHtml,
+  principle,
+  steps,
+} = Astro.props;
+---
+
+<section id="proceso" class="section section-soft relative overflow-hidden">
+  <SectionHeader
+    index={index}
+    label={headerLabel}
+    title={heading}
+    titleHtml={headingHtml}
+    lead={principle ? `— ${principle}` : undefined}
+  />
+
+  <div class="shell">
+    <div class="grid grid-cols-1 md:grid-cols-[1fr_auto_1fr_auto_1fr] gap-8 md:gap-6 items-stretch">
+      {
+        steps.map((step, i) => (
+          <>
+            <article class="reveal card card-hoverable flex flex-col min-h-[20rem]">
+              <div class="flex items-center gap-3 mb-8">
+                <span class="t-mono text-[color:var(--color-ink-muted)]">0{i + 1}</span>
+                <span class="label-upper label-upper-dark">{step.label}</span>
+              </div>
+              <h3 class="h-card mb-5 text-balance">{step.title}</h3>
+              <p class="t-body flex-1">{step.body}</p>
+            </article>
+            {
+              i < steps.length - 1 && (
+                <div class="hidden md:flex items-center justify-center text-[color:var(--color-ink-muted)]" aria-hidden="true">
+                  <svg width="32" height="16" viewBox="0 0 32 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 8H30M30 8L23 1M30 8L23 15" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" opacity="0.5"/>
+                  </svg>
+                </div>
+              )
+            }
+          </>
+        ))
+      }
+    </div>
+  </div>
+</section>
