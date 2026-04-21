@@ -1,0 +1,217 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import Ladder from '@components/Ladder.astro';
+import Stepper from '@components/Stepper.astro';
+import CaseStudyGrid from '@components/CaseStudyGrid.astro';
+import Pillars from '@components/Pillars.astro';
+import ContactCTA from '@components/ContactCTA.astro';
+import Stats from '@components/Stats.astro';
+import CodeArtifact from '@components/CodeArtifact.astro';
+
+const lang = 'es';
+
+const stats = [
+  { value: '4', label: 'Semanas', caption: 'Tiempo medio al primer deploy desde el kickoff.' },
+  { value: '18+', label: 'Agentes', caption: 'Definiciones de agentes listas en orch-agents, auditables en el repo.' },
+  { value: '2', label: 'En producción', caption: 'Sistemas en vivo con código abierto y commit history público.' },
+  { value: '15+', label: 'Años shippeando', caption: 'No aprendimos IA este mes. Llevamos quince años entregando software.' },
+];
+
+const workflowYaml = `templates:
+  tdd-workflow:   [coder, tester]
+  feature-build:  [architect, coder, reviewer]
+  security-audit: [security-architect]
+
+github:
+  events:
+    pull_request.opened:  github-ops
+    issues.labeled.bug:   tdd-workflow
+    workflow_run.failure: quick-fix
+
+agents:
+  routing:
+    bug:      tdd-workflow
+    feature:  feature-build
+    security: security-audit
+    default:  quick-fix`;
+
+const tiers = [
+  {
+    signal: 'Tengo una idea, no tengo código.',
+    diagnosis: 'L0 Tribal → L1 Explorando',
+    deliverable: 'Discovery Sprint — roadmap técnico priorizado, análisis build-vs-buy, selección de stack.',
+    duration: '3–5 días',
+    price: '€1.5–3K',
+  },
+  {
+    signal: 'Construí algo con Cursor o Bolt y tengo miedo de shippearlo.',
+    diagnosis: 'L1 Explorando → L2 Legible',
+    deliverable: 'Vibe Check — auditoría de código, agujeros de seguridad, arquitectura, plan de remediación priorizado.',
+    duration: '1 semana',
+    price: '€3–6K',
+  },
+  {
+    signal: 'Necesito shippear un agente en producción.',
+    diagnosis: 'L2 Legible → L3 Operando',
+    deliverable: 'Build & Ship — un workflow de agente en producción, con WORKFLOW.md como handoff.',
+    duration: '2–6 semanas',
+    price: '€15–40K',
+  },
+  {
+    signal: 'Ya está vivo y necesito que siga mejorando.',
+    diagnosis: 'L3 Operando → L5 Auto-mejorando',
+    deliverable: 'Partnership — principal designado, optimización continua, expansión de capacidades.',
+    duration: 'mensual',
+    price: '€2–5K/mes',
+  },
+];
+
+const steps = [
+  {
+    label: 'Discover',
+    title: 'Auditamos lo que ya existe.',
+    body: 'Diagnóstico del estado actual y del conocimiento tribal que vive solo en cabezas. Sin preguntas genéricas — venimos a entender tu sistema.',
+  },
+  {
+    label: 'Structure',
+    title: 'Hacemos legible lo que no lo era.',
+    body: 'Convertimos procesos en schemas, reglas de validación, y modelos de datos canónicos. El primer entregable casi siempre es un artefacto diffable.',
+  },
+  {
+    label: 'Ship',
+    title: 'Entregamos con puertas de revisión.',
+    body: 'Sistemas de IA en producción con trazabilidad, autoridad acotada, y simulación antes de ejecutar. Sin atajos en seguridad.',
+  },
+];
+
+const cases = [
+  {
+    title: 'orch-agents',
+    tagline: 'Infraestructura de orquestación de agentes para repos de GitHub y tableros de Linear.',
+    problem: 'Enrutamiento tribal de agentes — nadie sabe por qué se eligió cada uno.',
+    solution: 'WORKFLOW.md como fuente única de verdad, diffable y versionado.',
+    status: 'OSS · MIT · v0.4.0',
+    href: '/casos/orch-agents',
+  },
+  {
+    title: 'tapioca.money',
+    tagline: 'Optimizador autónomo de rendimientos DeFi con agente AI en Base.',
+    problem: 'Un agente con acceso a dinero — radio de impacto sin delimitar.',
+    solution: 'Session keys acotadas por token + simulación antes de ejecutar.',
+    status: 'Producción · BUSL · v0.2.0',
+    href: '/casos/tapioca',
+  },
+];
+
+const pillars = [
+  {
+    title: 'Framework-agnóstico',
+    body: 'No te vendemos nuestra plataforma. Para cada proyecto elegimos el stack que sirve al nivel en el que estás — y te explicamos por qué antes de escribir una línea. Servimos al problema, no al framework. Los casos de estudio muestran la decisión en contexto.',
+    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">No te vendemos nuestra plataforma.</strong> Para cada proyecto elegimos el stack que sirve al nivel en el que estás — y te explicamos por qué antes de escribir una línea. Servimos al <em>problema</em>, no al framework.',
+  },
+  {
+    title: 'Seguridad desde el primer commit',
+    body: 'Autoridad acotada, simulación antes de ejecutar, puertas de revisión, rate limits, revocabilidad. No es un checklist al final — es la arquitectura desde el día uno.',
+    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">Autoridad acotada, simulación antes de ejecutar, puertas de revisión.</strong> No es un checklist al final — es la <em>arquitectura desde el día uno</em>.',
+  },
+  {
+    title: 'Legibilidad antes que magia',
+    body: 'El bottleneck rara vez es el modelo. Es que tu organización no puede describir su propio trabajo en una forma que la máquina pueda seguir. Nuestro primer entregable casi siempre es un artefacto que hace el conocimiento tribal diffable.',
+    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">El bottleneck rara vez es el modelo.</strong> Es que tu organización no puede describir su propio trabajo en una forma que la máquina pueda seguir. Nuestro primer entregable casi siempre es un <em>artefacto diffable</em>.',
+  },
+];
+
+const ctaSteps = [
+  { title: 'Agenda una llamada', body: '30 minutos. Evaluamos tu caso, te damos un timeline y una arquitectura realista.' },
+  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, stack elegido y por qué.' },
+  { title: 'Empezamos', body: 'Primer deploy en menos de 4 semanas desde el kickoff.' },
+];
+---
+
+<BaseLayout
+  lang={lang}
+  pathname="/"
+  title="Automata — Agentes de IA en producción"
+  description="Diseñamos, construimos y operamos agentes de IA con puertas de revisión, autoridad acotada y trazabilidad. Para equipos que van a poner código de IA donde importa."
+>
+  <Hero
+    variant="hero"
+    status="Aceptando proyectos · ES · EN · LATAM"
+    titleHtml="¿Tu agente de IA está listo para <em>producción</em> — o solo para la <em>demo</em>?"
+    title="¿Tu agente de IA está listo para producción — o solo para la demo?"
+    lead="Diseñamos, construimos y operamos agentes de IA con puertas de revisión, autoridad acotada y trazabilidad. Sin atajos, sin vibes. Para equipos que van a poner código de IA donde importa."
+    primaryCta={{ label: 'Agendar llamada de descubrimiento', href: '#contacto' }}
+    secondaryCta={{ label: 'Ver casos de estudio', href: '/casos' }}
+    microline="ES · EN — Basado en LATAM · 15+ años shippeando software"
+  />
+
+  <Ladder
+    index="01"
+    label="Escalera"
+    headingHtml="¿Por dónde <em>estás</em>?"
+    heading="¿Por dónde estás?"
+    lead="Nadie llega diciendo “quiero un agente”. Llegan diciendo “tengo este problema”. Identifícate en la frase — cada nivel tiene un entregable con precio y duración claros."
+    tiers={tiers}
+    cta={{ label: 'Empezar con una conversación', href: '#contacto' }}
+  />
+
+  <Stepper
+    index="02"
+    headerLabel="Proceso"
+    headingHtml="Cómo trabajamos — <em>tres fases</em>, cada proyecto."
+    heading="Cómo trabajamos — tres fases, cada proyecto."
+    principle="Empezar pequeño, moverse rápido, escalar lo que funciona."
+    steps={steps}
+  />
+
+  <CaseStudyGrid
+    index="03"
+    label="Casos"
+    headingHtml="Dos piezas de portfolio que puedes <em>auditar línea por línea</em>."
+    heading="Dos piezas de portfolio que puedes auditar línea por línea."
+    lead="No logos de clientes que no puedo nombrar. Código real, commit history, changelogs. La evidencia vive en el repo."
+    cases={cases}
+  />
+
+  <Stats
+    index="04"
+    label="Evidencia"
+    headingHtml="Los <em>números</em> que me importan."
+    heading="Los números que nos importan."
+    lead="No impresiones por mes ni “clientes satisfechos”. Métricas de entrega, auditables."
+    stats={stats}
+  />
+
+  <CodeArtifact
+    index="05"
+    label="Artefacto"
+    headingHtml="Tribal → legible, en <em>un solo archivo</em>."
+    heading="Tribal → legible, en un solo archivo."
+    lead="Este es el WORKFLOW.md real que corre orch-agents. Todo el enrutamiento de agentes que antes vivía en una cabeza, ahora vive en un commit."
+    filename="WORKFLOW.md"
+    lang="yaml"
+    code={workflowYaml}
+    caption="Extracto real del repositorio. Ver la versión completa en github.com/be-automata/orch-agents."
+  />
+
+  <Pillars
+    index="06"
+    headerLabel="Diferenciadores"
+    headingHtml="Qué nos hace <em>diferente</em>."
+    heading="Qué nos hace diferente."
+    pillars={pillars}
+  />
+
+  <ContactCTA
+    index="07"
+    label="Contacto"
+    id="contacto"
+    headingHtml="Hablemos de <em>tu proyecto</em>."
+    heading="Hablemos de tu proyecto."
+    steps={ctaSteps}
+    primary={{ label: 'Agendar llamada de descubrimiento', href: 'mailto:hello@beautomata.com?subject=Llamada%20de%20descubrimiento' }}
+    secondary={{ label: 'Ver el proceso completo', href: '/capacidades' }}
+    footnote="Sin pitch, sin compromiso. Si no somos el match, te decimos quién sí lo es."
+  />
+</BaseLayout>

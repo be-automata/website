@@ -1,0 +1,74 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import CaseStudyGrid from '@components/CaseStudyGrid.astro';
+import ContactCTA from '@components/ContactCTA.astro';
+import { getCollection } from 'astro:content';
+
+const entries = await getCollection('case-studies', ({ data }) => data.lang === 'es');
+const sorted = entries.sort((a, b) => a.data.order - b.data.order);
+
+const problemMap: Record<string, string> = {
+  'orch-agents': 'Enrutamiento tribal de agentes — nadie sabe por qué se eligió cada uno.',
+  tapioca: 'Un agente con acceso a dinero — radio de impacto sin delimitar.',
+};
+const solutionMap: Record<string, string> = {
+  'orch-agents': 'WORKFLOW.md como fuente única de verdad, diffable y versionado.',
+  tapioca: 'Session keys acotadas por token + simulación antes de ejecutar.',
+};
+const statusMap: Record<string, string> = {
+  'orch-agents': 'OSS · MIT · v0.4.0',
+  tapioca: 'Producción · BUSL · v0.2.0',
+};
+
+const cases = sorted.map((entry) => ({
+  title: entry.data.title,
+  tagline: entry.data.tagline,
+  problem: problemMap[entry.data.caseSlug] ?? '—',
+  solution: solutionMap[entry.data.caseSlug] ?? '—',
+  status: statusMap[entry.data.caseSlug] ?? entry.data.license,
+  href: `/casos/${entry.data.caseSlug}`,
+}));
+
+const ctaSteps = [
+  { title: 'Agenda una llamada', body: '30 minutos. Evaluamos tu caso, te damos un timeline y una arquitectura realista.' },
+  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, stack elegido y por qué.' },
+  { title: 'Empezamos', body: 'Primer deploy en menos de 4 semanas desde el kickoff.' },
+];
+---
+
+<BaseLayout
+  lang="es"
+  pathname="/casos"
+  title="Automata — Casos de estudio"
+  description="Código real, commit history, changelogs. La evidencia vive en el repo."
+>
+  <Hero
+    variant="page"
+    sectionIndex="Casos de estudio"
+    titleHtml="Dos piezas de portfolio que puedes <em>auditar línea por línea</em>."
+    title="Dos piezas de portfolio que puedes auditar línea por línea."
+    lead="No logos de clientes que no puedo nombrar. Código real, commit history, changelogs. La evidencia vive en el repo."
+    primaryCta={{ label: 'Agendar llamada', href: '#contacto' }}
+  />
+
+  <CaseStudyGrid
+    index="01"
+    label="Vivos"
+    headingHtml="Casos <em>en vivo</em>."
+    heading="Casos en vivo."
+    cases={cases}
+  />
+
+  <ContactCTA
+    index="02"
+    label="Contacto"
+    id="contacto"
+    headingHtml="¿Tu caso tiene el <em>mismo perfil</em>?"
+    heading="¿Tu caso tiene el mismo perfil?"
+    steps={ctaSteps}
+    primary={{ label: 'Agendar llamada de descubrimiento', href: 'mailto:hello@beautomata.com?subject=Llamada%20de%20descubrimiento' }}
+    secondary={{ label: 'Volver al inicio', href: '/' }}
+    footnote="Sin pitch, sin compromiso."
+  />
+</BaseLayout>
