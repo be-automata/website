@@ -1,0 +1,182 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import MaturityLadder from '@components/MaturityLadder.astro';
+import CapabilityGroup from '@components/CapabilityGroup.astro';
+import AntiList from '@components/AntiList.astro';
+import ContactCTA from '@components/ContactCTA.astro';
+
+const levels = [
+  {
+    id: 'L0',
+    name: 'Tribal',
+    quote: 'Knowledge lives in people\'s heads.',
+    signal: 'No one can explain in writing how the process works.',
+    deliverable: '3–5 day assessment with prioritized roadmap and build-vs-buy analysis.',
+  },
+  {
+    id: 'L1',
+    name: 'Experimenting',
+    quote: 'Individual tools, nothing shared.',
+    signal: 'Everyone uses Cursor or ChatGPT their own way — no guardrails, no conventions.',
+    deliverable: 'Vibe Check — audit of what was built with AI, prioritized remediation plan.',
+  },
+  {
+    id: 'L2',
+    name: 'Legible',
+    quote: 'Your organization can describe its own work.',
+    signal: 'Artifacts exist (WORKFLOW.md, schemas, registries) that encode the knowledge.',
+    deliverable: 'Document ingestion pipeline, semantic knowledge base, conversational interface with source-attributed answers.',
+  },
+  {
+    id: 'L3',
+    name: 'Operating',
+    quote: 'Your organization knows what it knows.',
+    signal: 'An agent is live answering questions about your data, not generic data.',
+    deliverable: 'Production agent workflow with WORKFLOW.md handoff, review gates, and full traceability.',
+  },
+  {
+    id: 'L4',
+    name: 'Adaptive',
+    quote: 'The system brings insights to you.',
+    signal: 'The system proposes actions, detects anomalies, escalates decisions when needed.',
+    deliverable: 'Feedback loops, eval design, production telemetry.',
+  },
+  {
+    id: 'L5',
+    name: 'Self-improving',
+    quote: 'The system learns from every interaction.',
+    signal: 'Marginal cost of a new use case approaches zero.',
+    deliverable: 'Monthly retainer · named principal · continuous capability expansion.',
+  },
+];
+
+const groups = [
+  {
+    title: 'Agent orchestration',
+    items: [
+      'Event-driven dispatch (GitHub, Linear, custom webhooks)',
+      'Worktree or container isolation',
+      'Skill-based routing and progressive tool disclosure',
+      'Conversation compaction, stop commands, loop prevention',
+    ],
+  },
+  {
+    title: 'RAG & knowledge',
+    items: [
+      'Document ingestion with canonical schemas',
+      'Vector stores — pgvector, Pinecone, Qdrant',
+      'Source-attributed answers — no hallucination without citation',
+      'Continuous evals on retrieval quality',
+    ],
+  },
+  {
+    title: 'Autonomous agent security',
+    items: [
+      'Scoped authority models — session keys, scopes, expiration',
+      'Simulation-before-execute · rate limits · distributed locks',
+      'One-click revocability · user-visible audit trails',
+      'Encryption at rest · secrets management · rotation',
+    ],
+  },
+  {
+    title: 'Production infrastructure',
+    items: [
+      'Deploy in the customer\'s cloud, not ours',
+      'Observability — structured logs, metrics, health endpoints',
+      'Resilient crons with tunable batch + concurrency',
+      'CI/CD with automated review gates',
+    ],
+  },
+];
+
+const antiItems = [
+  'I don\'t build chatbots "just to have AI".',
+  'I don\'t sell proprietary platforms that lock you in.',
+  'I don\'t work with clients who can\'t (or won\'t) articulate the real problem.',
+  'I don\'t promise "AI that replaces your team". We promise AI that makes your team disproportionately more effective.',
+  'I don\'t ship without a review gate. Ever.',
+];
+
+const ctaSteps = [
+  { title: 'Book a call', body: '30 minutes. we assess your use case and give you a realistic timeline and architecture.' },
+  { title: 'Technical proposal', body: 'Within 5 days of the call. Architecture, phases, costs, stack chosen and why.' },
+  { title: 'We start', body: 'First deploy in under 4 weeks from kickoff.' },
+];
+---
+
+<BaseLayout
+  lang="en"
+  pathname="/en/capabilities"
+  title="Automata — Capabilities"
+  description="From tribal knowledge to legible, traceable systems. We work at any of the five maturity levels — from first diagnosis to self-improving system."
+>
+  <Hero
+    variant="page"
+    sectionIndex="Capabilities"
+    titleHtml="Production AI agents. <em>In weeks</em>, not quarters."
+    title="Production AI agents. In weeks, not quarters."
+    lead="From tribal knowledge to legible, traceable systems. We work at any of the five maturity levels — from first diagnosis to self-improving system."
+    primaryCta={{ label: 'See the full ladder', href: '#ladder' }}
+    secondaryCta={{ label: 'Book a call', href: '#contact' }}
+  />
+
+  <div id="ladder">
+    <MaturityLadder
+      index="01"
+      label="The ladder"
+      headingHtml="The full ladder — <em>L0 → L5</em>."
+      heading="The full ladder — L0 → L5."
+      lead="Each level is a concrete state of the system, with signals that identify it and deliverables that move it to the next."
+      levels={levels}
+    />
+  </div>
+
+  <CapabilityGroup
+    index="02"
+    label="Capabilities"
+    headingHtml="<em>Technical</em> capabilities."
+    heading="Technical capabilities."
+    lead="The clusters that cover most projects. The specific framework is chosen by the problem, not the catalog."
+    groups={groups}
+  />
+
+  <section id="process" class="section">
+    <div class="shell max-w-3xl reveal">
+      <div class="section-index mb-8">
+        <span>03</span>
+        <span>·</span>
+        <span>About the stack</span>
+      </div>
+      <h2 class="h-section mb-8">
+        Every project starts with <em>one question</em>.
+      </h2>
+      <p class="t-body mb-8" style="font-size: 1.125rem;">
+        <em>“What's the level and which tools serve it best?”</em> The framework is a decision — not a commitment. Case studies are the evidence: each one documents what we chose, what we rejected, and why.
+      </p>
+      <a href="/en/cases" class="inline-flex items-center gap-2 t-caption text-[color:var(--color-ink)] border-b border-[color:var(--color-border)] pb-1 hover:border-[color:var(--color-ink)] transition-colors">
+        See case studies <span aria-hidden="true" class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <AntiList
+    index="04"
+    label="Constraints"
+    headingHtml="What we <em>don't do</em>."
+    heading="What we don't do."
+    items={antiItems}
+  />
+
+  <ContactCTA
+    index="05"
+    label="Contact"
+    id="contact"
+    headingHtml="Let's talk about <em>your project</em>."
+    heading="Let's talk about your project."
+    steps={ctaSteps}
+    primary={{ label: 'Book a discovery call', href: 'mailto:hello@beautomata.com?subject=Discovery%20call' }}
+    secondary={{ label: 'Back to home', href: '/en/' }}
+    footnote="No pitch, no commitment."
+  />
+</BaseLayout>

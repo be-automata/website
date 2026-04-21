@@ -1,0 +1,182 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+import Hero from '@components/Hero.astro';
+import MaturityLadder from '@components/MaturityLadder.astro';
+import CapabilityGroup from '@components/CapabilityGroup.astro';
+import AntiList from '@components/AntiList.astro';
+import ContactCTA from '@components/ContactCTA.astro';
+
+const levels = [
+  {
+    id: 'L0',
+    name: 'Tribal',
+    quote: 'El conocimiento vive en cabezas.',
+    signal: 'Nadie puede explicar por escrito cómo funciona el proceso.',
+    deliverable: 'Assessment de 3–5 días con roadmap priorizado y análisis build-vs-buy.',
+  },
+  {
+    id: 'L1',
+    name: 'Explorando',
+    quote: 'Herramientas individuales, nada compartido.',
+    signal: 'Cada quien usa Cursor o ChatGPT a su manera, sin guardrails ni convenciones.',
+    deliverable: 'Vibe Check — auditoría de lo que ya se construyó con IA, plan de remediación priorizado.',
+  },
+  {
+    id: 'L2',
+    name: 'Legible',
+    quote: 'Tu organización puede describir su propio trabajo.',
+    signal: 'Existen artefactos (WORKFLOW.md, schemas, registros) que codifican el conocimiento.',
+    deliverable: 'Pipeline de ingesta de documentos, base de conocimiento semántica, interfaz conversacional con respuestas atribuidas.',
+  },
+  {
+    id: 'L3',
+    name: 'Operando',
+    quote: 'Tu organización sabe lo que sabe.',
+    signal: 'Hay un agente en producción respondiendo preguntas sobre tus datos, no datos genéricos.',
+    deliverable: 'Workflow de agente en producción con WORKFLOW.md de handoff, puertas de revisión, y trazabilidad completa.',
+  },
+  {
+    id: 'L4',
+    name: 'Adaptativo',
+    quote: 'El sistema te trae insights.',
+    signal: 'El sistema propone acciones, detecta anomalías, escala decisiones cuando hace falta.',
+    deliverable: 'Loops de feedback, diseño de evals, telemetría de producción.',
+  },
+  {
+    id: 'L5',
+    name: 'Auto-mejorando',
+    quote: 'El sistema aprende de cada interacción.',
+    signal: 'El costo marginal de un nuevo caso de uso tiende a cero.',
+    deliverable: 'Retainer mensual · principal designado · expansión continua de capacidades.',
+  },
+];
+
+const groups = [
+  {
+    title: 'Orquestación de agentes',
+    items: [
+      'Event-driven dispatch (GitHub, Linear, webhooks custom)',
+      'Aislamiento por worktree o contenedor',
+      'Skill-based routing y progressive tool disclosure',
+      'Compactación de conversación, stop commands, loop prevention',
+    ],
+  },
+  {
+    title: 'RAG y conocimiento',
+    items: [
+      'Ingesta de documentos con schemas canónicos',
+      'Bases vectoriales — pgvector, Pinecone, Qdrant',
+      'Respuestas atribuidas a su fuente, sin alucinación sin cita',
+      'Evals continuos sobre la calidad de recuperación',
+    ],
+  },
+  {
+    title: 'Seguridad de agentes autónomos',
+    items: [
+      'Modelos de autoridad acotada — session keys, scopes, expiración',
+      'Simulación antes de ejecutar · rate limits · locks distribuidos',
+      'Revocabilidad en un click · audit trails visibles al usuario',
+      'Cifrado en reposo · manejo de secretos · rotación',
+    ],
+  },
+  {
+    title: 'Infraestructura de producción',
+    items: [
+      'Despliegue en cloud del cliente (no el mío)',
+      'Observabilidad — logs estructurados, métricas, health endpoints',
+      'Crons resilientes con batch + concurrencia ajustables',
+      'CI/CD con puertas de revisión automatizadas',
+    ],
+  },
+];
+
+const antiItems = [
+  'No construimos chatbots "para tener IA".',
+  'No vendemos plataformas propias que te encadenen a nosotros.',
+  'No trabajamos con clientes que no pueden (o no quieren) articular qué problema real quieren resolver.',
+  'No prometemos "IA que reemplaza a tu equipo". Prometemos IA que hace que tu equipo sea desproporcionadamente más efectivo.',
+  'No shippeamos sin puerta de revisión. Nunca.',
+];
+
+const ctaSteps = [
+  { title: 'Agenda una llamada', body: '30 minutos. Evaluamos tu caso, te damos un timeline y una arquitectura realista.' },
+  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, stack elegido y por qué.' },
+  { title: 'Empezamos', body: 'Primer deploy en menos de 4 semanas desde el kickoff.' },
+];
+---
+
+<BaseLayout
+  lang="es"
+  pathname="/capacidades"
+  title="Automata — Capacidades"
+  description="De conocimiento tribal a sistemas legibles y trazables. Trabajamos en cualquiera de los cinco niveles de madurez — desde el primer diagnóstico hasta el sistema auto-mejorante."
+>
+  <Hero
+    variant="page"
+    sectionIndex="Capacidades"
+    titleHtml="Agentes de IA en producción. <em>En semanas</em>, no en trimestres."
+    title="Agentes de IA en producción. En semanas, no en trimestres."
+    lead="De conocimiento tribal a sistemas legibles y trazables. Trabajamos en cualquiera de los cinco niveles de madurez — desde el primer diagnóstico hasta el sistema auto-mejorante."
+    primaryCta={{ label: 'Ver la escalera completa', href: '#escalera' }}
+    secondaryCta={{ label: 'Agendar llamada', href: '#contacto' }}
+  />
+
+  <div id="escalera">
+    <MaturityLadder
+      index="01"
+      label="La escalera"
+      headingHtml="La escalera completa — <em>L0 → L5</em>."
+      heading="La escalera completa — L0 → L5."
+      lead="Cada nivel es un estado concreto del sistema, con señales que lo identifican y entregables que lo mueven al siguiente."
+      levels={levels}
+    />
+  </div>
+
+  <CapabilityGroup
+    index="02"
+    label="Capacidades"
+    headingHtml="Capacidades <em>técnicas</em>."
+    heading="Capacidades técnicas."
+    lead="Los clusters que tocan la mayoría de proyectos. El framework concreto lo elige el problema, no el catálogo."
+    groups={groups}
+  />
+
+  <section id="proceso" class="section">
+    <div class="shell max-w-3xl reveal">
+      <div class="section-index mb-8">
+        <span>03</span>
+        <span>·</span>
+        <span>Sobre el stack</span>
+      </div>
+      <h2 class="h-section mb-8">
+        Cada proyecto empieza con <em>una pregunta</em>.
+      </h2>
+      <p class="t-body mb-8" style="font-size: 1.125rem;">
+        <em>“¿Cuál es el nivel y qué herramientas le sirven mejor?”</em> El framework es una decisión — no un compromiso. Los casos de estudio son la evidencia: cada uno documenta qué elegimos, qué desechamos, y por qué.
+      </p>
+      <a href="/casos" class="inline-flex items-center gap-2 t-caption text-[color:var(--color-ink)] border-b border-[color:var(--color-border)] pb-1 hover:border-[color:var(--color-ink)] transition-colors">
+        Ver casos de estudio <span aria-hidden="true" class="arrow">→</span>
+      </a>
+    </div>
+  </section>
+
+  <AntiList
+    index="04"
+    label="Restricciones"
+    headingHtml="Lo que <em>no hacemos</em>."
+    heading="Lo que no hacemos."
+    items={antiItems}
+  />
+
+  <ContactCTA
+    index="05"
+    label="Contacto"
+    id="contacto"
+    headingHtml="Hablemos de <em>tu proyecto</em>."
+    heading="Hablemos de tu proyecto."
+    steps={ctaSteps}
+    primary={{ label: 'Agendar llamada de descubrimiento', href: 'mailto:hello@beautomata.com?subject=Llamada%20de%20descubrimiento' }}
+    secondary={{ label: 'Volver al inicio', href: '/' }}
+    footnote="Sin pitch, sin compromiso."
+  />
+</BaseLayout>
