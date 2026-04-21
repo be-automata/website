@@ -1,0 +1,74 @@
+---
+caseSlug: orch-agents
+lang: en
+title: orch-agents
+tagline: From tribal routing to legibility as infrastructure — an agent orchestrator for GitHub repos and Linear boards.
+stack:
+  - TypeScript
+  - Claude Agent SDK
+  - Fastify
+  - GitHub App
+  - Linear Agent API
+  - git worktrees
+license: MIT
+repoUrl: https://github.com/be-automata/orch-agents
+order: 1
+---
+
+## The diagnosis
+
+> *"Every solo dev has tribal knowledge about which agent should handle which task. It lives in one head — and breaks the moment work scales beyond that head."*
+
+A GitHub repo with issues, PRs, CI, and a Linear board generates dozens of decisions a day: *review this PR, fix that bug, investigate that CI failure, audit this security label.* For most teams, that routing lives in Slack threads and muscle memory. AI coding assistants made it worse — now everyone has **more** decisions, not fewer, and nobody can describe *why* a given agent was trusted with a given task.
+
+## What we structured
+
+One file: `WORKFLOW.md`.
+
+A YAML block that makes the routing legible to both humans and machines:
+
+```yaml
+templates:
+  tdd-workflow:   [coder, tester]
+  feature-build:  [architect, coder, reviewer]
+  security-audit: [security-architect]
+
+github:
+  events:
+    pull_request.opened:     github-ops
+    issues.labeled.bug:      tdd-workflow
+    workflow_run.failure:    quick-fix
+
+agents:
+  routing:
+    bug:      tdd-workflow
+    feature:  feature-build
+    security: security-audit
+    default:  quick-fix
+```
+
+Everything the organization knows about *"which agent runs on which signal"* now lives in a single commit-able, reviewable, diffable artifact. **Tribal → legible in one file.**
+
+## What we shipped
+
+- **18+ built-in agent definitions** — coder, reviewer, architect, security-architect, tester, and more
+- **Worktree isolation** — every agent runs in its own git worktree; no cross-contamination
+- **Review gate** — every change passes automated code review + tests + security scan before commit
+- **Dual tracker support** — GitHub webhooks + Linear's native Agent API (using `createAgentActivity`, not `createComment`)
+- **Safety-first runtime** — NDJSON permissions stream, conversation compaction, overload retries, graceful `stop` command on any PR or issue
+- **Library surface** — ships as both a service and a typed TypeScript library, with 6 subpath exports
+
+## Receipts
+
+From v0.2.0 to v0.4.0 in four weeks. Milestones include:
+
+- Skill-based event routing replaced hardcoded branching
+- Coordinator-only dispatch consolidated three paths into one — zero dead code
+- `WORKFLOW.md` became the single source of truth — no env-var fallback
+- Branded types (PlanId, WorkItemId, ExecId, AgentSessionId) with audit findings applied
+
+Changelog and commits are public — you don't have to take my word for it.
+
+## What this proves
+
+If you've shipped anything with Cursor, Bolt, or Lovable and you're one *"which agent did what?"* incident away from losing confidence in your codebase, this is what **legibility as infrastructure** looks like. Not a methodology — a file anyone can read.
