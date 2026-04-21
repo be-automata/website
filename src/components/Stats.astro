@@ -1,0 +1,44 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Stat {
+  value: string;
+  label: string;
+  caption?: string;
+}
+
+interface Props {
+  index?: string;
+  label?: string;
+  heading: string;
+  headingHtml?: string;
+  lead?: string;
+  stats: Stat[];
+}
+
+const { index = '03', label = 'Evidencia', heading, headingHtml, lead, stats } = Astro.props;
+---
+
+<section class="section">
+  <SectionHeader
+    index={index}
+    label={label}
+    title={heading}
+    titleHtml={headingHtml}
+    lead={lead}
+  />
+
+  <div class="shell">
+    <div class="stats-row">
+      {
+        stats.map((s) => (
+          <div class="reveal flex flex-col gap-3 border-t border-[color:var(--color-border-subtle)] pt-6">
+            <div class="stat-big">{s.value}</div>
+            <div class="label-upper label-upper-dark">{s.label}</div>
+            {s.caption && <div class="t-caption max-w-[18rem]">{s.caption}</div>}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

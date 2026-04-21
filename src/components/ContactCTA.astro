@@ -1,0 +1,81 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Props {
+  index?: string;
+  label?: string;
+  heading: string;
+  headingHtml?: string;
+  steps: { title: string; body: string }[];
+  primary: { label: string; href: string };
+  secondary?: { label: string; href: string };
+  footnote?: string;
+  id?: string;
+  hideSectionHeader?: boolean;
+}
+
+const {
+  index = '05',
+  label = 'Contacto',
+  heading,
+  headingHtml,
+  steps,
+  primary,
+  secondary,
+  footnote,
+  id = 'contacto',
+  hideSectionHeader = false,
+} = Astro.props;
+---
+
+<section id={id} class="section relative overflow-hidden noise-warm" style="background: linear-gradient(180deg, var(--color-canvas) 0%, var(--color-stone) 100%);">
+  {
+    !hideSectionHeader && (
+      <SectionHeader
+        index={index}
+        label={label}
+        title={heading}
+        titleHtml={headingHtml}
+      />
+    )
+  }
+
+  <div class="shell">
+    <div class="grid grid-cols-1 md:grid-cols-[auto_auto_auto] gap-y-8 md:gap-x-12 mb-14 items-start">
+      {
+        steps.map((step, i) => (
+          <div class="reveal max-w-[18rem]">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="t-mono text-[color:var(--color-ink-muted)]">0{i + 1}</span>
+              <span class="label-upper label-upper-dark">{step.title}</span>
+            </div>
+            <p class="t-body">{step.body}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="flex flex-wrap items-center gap-3">
+      <a href={primary.href} class="btn-warm">
+        {primary.label}
+        <span aria-hidden="true" class="arrow">→</span>
+      </a>
+      {
+        secondary && (
+          <a href={secondary.href} class="btn-pill-light">
+            {secondary.label}
+            <span aria-hidden="true" class="arrow">→</span>
+          </a>
+        )
+      }
+    </div>
+
+    {
+      footnote && (
+        <p class="mt-10 t-caption max-w-xl">
+          {footnote}
+        </p>
+      )
+    }
+  </div>
+</section>

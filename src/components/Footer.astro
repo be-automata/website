@@ -1,0 +1,89 @@
+---
+import { t, pathFor, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+
+const columns = lang === 'es'
+  ? [
+      { title: 'Trabajo', links: [
+        { label: 'Capacidades', href: pathFor(lang, 'capacidades') },
+        { label: 'Casos', href: pathFor(lang, 'casos') },
+        { label: 'Proceso', href: pathFor(lang, 'capacidades#proceso') },
+      ]},
+      { title: 'Contacto', links: [
+        { label: 'Agendar llamada', href: '#contacto' },
+        { label: 'hello@beautomata.com', href: 'mailto:hello@beautomata.com' },
+      ]},
+      { title: 'Open source', links: [
+        { label: 'orch-agents', href: 'https://github.com/be-automata/orch-agents' },
+        { label: 'GitHub', href: 'https://github.com/be-automata' },
+      ]},
+    ]
+  : [
+      { title: 'Work', links: [
+        { label: 'Capabilities', href: pathFor(lang, 'capabilities') },
+        { label: 'Cases', href: pathFor(lang, 'cases') },
+        { label: 'Process', href: pathFor(lang, 'capabilities#process') },
+      ]},
+      { title: 'Contact', links: [
+        { label: 'Book a call', href: '#contact' },
+        { label: 'hello@beautomata.com', href: 'mailto:hello@beautomata.com' },
+      ]},
+      { title: 'Open source', links: [
+        { label: 'orch-agents', href: 'https://github.com/be-automata/orch-agents' },
+        { label: 'GitHub', href: 'https://github.com/be-automata' },
+      ]},
+    ];
+
+const tag = t(lang, 'footer.tag');
+---
+
+<footer class="section-soft border-t border-[color:var(--color-border-subtle)] mt-20 relative overflow-hidden">
+  <div class="shell py-20 relative">
+    {/* Oversized watermark brand */}
+    <div class="absolute bottom-0 right-0 translate-y-1/4 pointer-events-none select-none" aria-hidden="true">
+      <div class="t-ghost" style="font-size: clamp(8rem, 10vw + 4rem, 20rem); color: rgba(0,0,0,0.035);">
+        AUTOMATA
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 relative">
+      <div class="md:col-span-1">
+        <div class="flex items-center gap-2 mb-6">
+          <span class="inline-block w-6 h-6 rounded-md bg-[color:var(--color-ink)] text-[color:var(--color-canvas)] text-center text-xs font-light leading-6">A</span>
+          <span class="label-upper label-upper-dark">Automata</span>
+        </div>
+        <p class="t-body max-w-xs" style="font-size: 0.9375rem;">{tag}</p>
+      </div>
+
+      {
+        columns.map((col) => (
+          <div>
+            <div class="label-upper mb-5">
+              {col.title}
+            </div>
+            <ul class="space-y-3">
+              {col.links.map((link) => (
+                <li>
+                  <a href={link.href} class="t-body hover:text-[color:var(--color-ink)] transition-colors" style="font-size: 0.9375rem;">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="mt-20 pt-8 border-t border-[color:var(--color-border-subtle)] flex flex-wrap gap-4 justify-between t-caption">
+      <span>© {year} Automata · {t(lang, 'footer.rights')}</span>
+      <span class="t-mono">ES · EN · LATAM → Global</span>
+    </div>
+  </div>
+</footer>

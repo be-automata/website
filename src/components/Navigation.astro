@@ -1,0 +1,50 @@
+---
+import { t, pathFor, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  pathname: string;
+}
+
+const { lang, pathname } = Astro.props;
+
+const links = [
+  { key: 'nav.capabilities' as const, href: pathFor(lang, lang === 'es' ? 'capacidades' : 'capabilities') },
+  { key: 'nav.cases' as const, href: pathFor(lang, lang === 'es' ? 'casos' : 'cases') },
+];
+
+const altLangPath = lang === 'es' ? `/en${pathname === '/' ? '' : pathname}` : pathname.replace(/^\/en/, '') || '/';
+---
+
+<header class="sticky top-0 z-50 bg-[color:var(--color-canvas)]/80 backdrop-blur-md border-b border-[color:var(--color-border-subtle)]">
+  <div class="shell flex items-center justify-between h-16">
+    <a href={lang === 'es' ? '/' : '/en/'} class="flex items-center gap-2 group" aria-label="Automata">
+      <span class="inline-block w-6 h-6 rounded-md bg-[color:var(--color-ink)] text-[color:var(--color-canvas)] text-center text-xs font-light leading-6 transition-transform group-hover:rotate-12">A</span>
+      <span class="label-upper label-upper-dark">Automata</span>
+    </a>
+
+    <nav class="flex items-center gap-7 text-sm">
+      {
+        links.map((link) => (
+          <a
+            href={link.href}
+            class="text-[color:var(--color-ink-secondary)] hover:text-[color:var(--color-ink)] transition-colors"
+          >
+            {t(lang, link.key)}
+          </a>
+        ))
+      }
+      <a
+        href={altLangPath}
+        class="text-[color:var(--color-ink-muted)] hover:text-[color:var(--color-ink)] transition-colors t-mono"
+        aria-label="Switch language"
+      >
+        {t(lang, 'lang.switch')}
+      </a>
+      <a href={lang === 'es' ? '#contacto' : '#contact'} class="btn-pill-dark hidden md:inline-flex">
+        {t(lang, 'cta.book')}
+        <span aria-hidden="true" class="arrow">→</span>
+      </a>
+    </nav>
+  </div>
+</header>

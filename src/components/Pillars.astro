@@ -1,0 +1,56 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Pillar {
+  title: string;
+  body: string;
+  bodyHtml?: string;
+}
+
+interface Props {
+  index?: string;
+  headerLabel?: string;
+  heading: string;
+  headingHtml?: string;
+  pillars: Pillar[];
+}
+
+const {
+  index = '04',
+  headerLabel = 'Diferenciadores',
+  heading,
+  headingHtml,
+  pillars,
+} = Astro.props;
+---
+
+<section class="section">
+  <SectionHeader
+    index={index}
+    label={headerLabel}
+    title={heading}
+    titleHtml={headingHtml}
+  />
+
+  <div class="shell">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10">
+      {
+        pillars.map((p, i) => (
+          <div class="reveal relative pt-10 border-t border-[color:var(--color-border-subtle)]">
+            <div class="absolute top-0 left-0 t-mono text-[color:var(--color-ink-muted)] -translate-y-1/2 bg-[color:var(--color-canvas)] pr-3">
+              0{i + 1} / 0{pillars.length}
+            </div>
+            <h3 class="h-card mb-5 text-balance" style="font-weight: 500;">{p.title}</h3>
+            {
+              p.bodyHtml ? (
+                <p class="t-body max-w-md" set:html={p.bodyHtml} />
+              ) : (
+                <p class="t-body max-w-md">{p.body}</p>
+              )
+            }
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

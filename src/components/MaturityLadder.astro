@@ -1,0 +1,80 @@
+---
+import SectionHeader from './SectionHeader.astro';
+
+interface Level {
+  id: string;
+  name: string;
+  quote: string;
+  signal: string;
+  deliverable: string;
+}
+
+interface Props {
+  index?: string;
+  label?: string;
+  heading: string;
+  headingHtml?: string;
+  lead?: string;
+  levels: Level[];
+}
+
+const { index = '02', label = 'La escalera', heading, headingHtml, lead, levels } = Astro.props;
+---
+
+<section class="section">
+  <SectionHeader
+    index={index}
+    label={label}
+    title={heading}
+    titleHtml={headingHtml}
+    lead={lead}
+  />
+
+  <div class="shell">
+    {/* Horizontal stepper — hidden on mobile */}
+    <div class="hidden lg:flex items-stretch gap-0 mb-20 border-t border-b border-[color:var(--color-border-subtle)]">
+      {
+        levels.map((l, i) => (
+          <>
+            <div class="flex-1 py-6 px-4 border-r border-[color:var(--color-border-subtle)] last:border-r-0 flex flex-col gap-2">
+              <div class="t-mono text-[color:var(--color-ink-muted)]">{l.id}</div>
+              <div class="h-card" style="font-size: 1.25rem;">{l.name}</div>
+            </div>
+          </>
+        ))
+      }
+    </div>
+
+    {/* Detail rows */}
+    <div>
+      {
+        levels.map((l, i) => (
+          <details class="reveal group border-t border-[color:var(--color-border-subtle)] last:border-b">
+            <summary class="flex items-center justify-between cursor-pointer list-none gap-6 py-8 px-2 -mx-2 hover:bg-[color:var(--color-canvas-soft)] transition-colors rounded-sm">
+              <div class="flex items-baseline gap-6 md:gap-10">
+                <span class="t-mono text-[color:var(--color-ink-muted)] min-w-[2rem]">{l.id}</span>
+                <span class="h-card">{l.name}</span>
+                <span class="t-body italic text-[color:var(--color-ink-muted)] hidden md:inline max-w-md">
+                  — {l.quote}
+                </span>
+              </div>
+              <span class="t-mono text-[color:var(--color-ink-muted)] group-open:rotate-45 transition-transform">
+                +
+              </span>
+            </summary>
+            <div class="pb-10 pt-2 pl-0 md:pl-[6rem] grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div>
+                <div class="label-upper mb-3">Señal</div>
+                <p class="t-body">{l.signal}</p>
+              </div>
+              <div>
+                <div class="label-upper mb-3">Entregable</div>
+                <p class="t-body">{l.deliverable}</p>
+              </div>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
