@@ -27,6 +27,9 @@ pnpm-debug.log*
 # vercel
 .vercel/
 
+# font assets — auto-downloaded by scripts/generate-og.mjs, not committed
+scripts/assets/*.ttf
+
 # playwright
 playwright-report/
 test-results/
