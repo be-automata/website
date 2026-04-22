@@ -1,5 +1,5 @@
 ---
-import { t, pathFor, type Lang } from '../i18n/ui';
+import { t, pathFor, translatePath, type Lang } from '../i18n/ui';
 
 interface Props {
   lang: Lang;
@@ -13,7 +13,7 @@ const links = [
   { key: 'nav.cases' as const, href: pathFor(lang, lang === 'es' ? 'casos' : 'cases') },
 ];
 
-const altLangPath = lang === 'es' ? `/en${pathname === '/' ? '' : pathname}` : pathname.replace(/^\/en/, '') || '/';
+const altLangPath = translatePath(lang, lang === 'es' ? 'en' : 'es', pathname);
 ---
 
 <header class="sticky top-0 z-50 bg-[color:var(--color-canvas)]/80 backdrop-blur-md border-b border-[color:var(--color-border-subtle)]">
