@@ -2,6 +2,16 @@
 
 All notable changes to the Automata website are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use the 4-digit `MAJOR.MINOR.PATCH.MICRO` scheme.
 
+## [0.1.1.0] - 2026-04-21
+
+### Fixed
+
+- **Language switcher on non-home pages** — clicking EN/ES from `/capacidades`, `/casos`, or any case study no longer lands on a 404. The switcher now translates the localized slug (`capacidades` ↔ `capabilities`, `casos` ↔ `cases`) and preserves any trailing `[slug]` segment on case-study URLs.
+
+### Added
+
+- **Playwright E2E suite** for the language switcher (7 tests, both directions, across home / capabilities / cases index / case-study detail). Run with `npm run test:e2e` (or `test:e2e:ui` for the Playwright UI, `test:e2e:report` to open the last HTML report).
+
 ## [0.1.0.0] - 2026-04-21
 
 ### Added
