@@ -42,3 +42,25 @@ export function pathFor(lang: Lang, path: string): string {
   const clean = path.replace(/^\/+/, '');
   return lang === 'es' ? `/${clean}` : `/en/${clean}`;
 }
+
+const slugTranslations: Record<string, string> = {
+  capacidades: 'capabilities',
+  capabilities: 'capacidades',
+  casos: 'cases',
+  cases: 'casos',
+};
+
+export function translatePath(fromLang: Lang, toLang: Lang, pathname: string): string {
+  if (fromLang === toLang) return pathname;
+
+  const stripped = fromLang === 'en' ? pathname.replace(/^\/en(?=\/|$)/, '') : pathname;
+  const segments = stripped.split('/').filter(Boolean);
+
+  if (segments.length === 0) return toLang === 'en' ? '/en/' : '/';
+
+  const first = segments[0];
+  if (first in slugTranslations) segments[0] = slugTranslations[first];
+
+  const translated = '/' + segments.join('/');
+  return toLang === 'en' ? `/en${translated}` : translated;
+}
