@@ -2,6 +2,19 @@
 
 All notable changes to the Automata website are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use the 4-digit `MAJOR.MINOR.PATCH.MICRO` scheme.
 
+## [0.1.2.0] - 2026-04-22
+
+### Added
+
+- **Privacy Policy** (`/privacidad` + `/en/privacy`) — bilingual GDPR-aware notice disclosing AUTOMATA AI LLC (Kansas) as data controller, Vercel as sole processor, and the actual reality of the site (no analytics, no non-essential cookies). Covers LGPD (Brazil), LFPDPPP (Mexico), Law 1581/2012 (Colombia), Law 25.326 (Argentina), Law 19.628 (Chile), Law 29733 (Peru), GDPR (EU/UK), and CCPA/CPRA (California), with explicit international-transfer language for both EU/UK→US and LATAM→US flows.
+- **Terms of Use** (`/terminos` + `/en/terms`) — bilingual terms with Kansas governing law, Johnson County venue, IP carve-out for MIT open-source projects linked from the site (e.g. `orch-agents`), and standard liability/warranty disclaimers.
+- **Footer legal links** — `Privacy · Terms` row on every page, locale-aware, styled in the existing `t-caption` bottom bar next to the copyright.
+- **Playwright coverage** for the new language-switch routes. Suite grows from 7 → 11 tests.
+
+### Changed
+
+- **`src/i18n/ui.ts`** — `slugTranslations` now maps `privacidad ↔ privacy` and `terminos ↔ terms`, so the header language switcher translates cleanly on every new route.
+
 ## [0.1.1.0] - 2026-04-21
 
 ### Fixed

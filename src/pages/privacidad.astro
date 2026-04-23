@@ -1,0 +1,260 @@
+---
+import BaseLayout from '@layouts/BaseLayout.astro';
+
+const lastUpdated = '22 de abril de 2026';
+---
+
+<BaseLayout
+  lang="es"
+  pathname="/privacidad"
+  title="Automata — Política de privacidad"
+  description="Qué datos recopilamos, por qué, con quién los compartimos y qué derechos tienes sobre ellos."
+>
+  <section class="section">
+    <div class="shell">
+      <div class="max-w-3xl">
+        <div class="section-index mb-8">
+          <span>—</span>
+          <span>Privacidad</span>
+        </div>
+        <h1 class="h-display mb-6">
+          Política de <em>privacidad</em>.
+        </h1>
+        <p class="t-lead mb-6 max-w-2xl">
+          Qué datos tocamos, por qué, y qué puedes hacer al respecto.
+        </p>
+        <p class="t-caption t-mono">Última actualización: {lastUpdated}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="shell">
+      <div class="max-w-3xl space-y-14">
+
+        <div>
+          <div class="label-upper mb-4">01 — Quiénes somos</div>
+          <h2 class="h-card mb-5">El operador de este sitio.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              Este sitio lo opera <strong class="text-[color:var(--color-ink)] font-medium">AUTOMATA AI LLC</strong>,
+              una sociedad de responsabilidad limitada registrada en el estado de Kansas, Estados Unidos.
+              Somos el <em>responsable del tratamiento</em> (data controller) de los datos personales descritos
+              en este documento.
+            </p>
+            <ul class="list-disc pl-5 space-y-1">
+              <li>Dirección: 17418 Jessica St, Gardner, Kansas 66030, EE. UU.</li>
+              <li>EIN: 33-3383598</li>
+              <li>Contacto en materia de privacidad: <a href="mailto:legal@beautomata.com" class="underline underline-offset-4 hover:text-[color:var(--color-ink)]">legal@beautomata.com</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">02 — Qué datos recopilamos</div>
+          <h2 class="h-card mb-5">Lo mínimo para responderte y mantener el sitio en pie.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              <strong class="text-[color:var(--color-ink)] font-medium">Cuando nos escribes.</strong>
+              Si nos contactas por correo (por ejemplo a <span class="t-mono">hello@beautomata.com</span>) recibimos
+              tu dirección de correo, el nombre que muestres en tu cliente de correo y el contenido del mensaje.
+            </p>
+            <p>
+              <strong class="text-[color:var(--color-ink)] font-medium">Registros técnicos.</strong>
+              Nuestro proveedor de hosting, <span class="t-mono">Vercel</span>, registra de forma temporal
+              direcciones IP, tipo de navegador y URLs solicitadas para proteger el sitio frente a abuso y mantener
+              el servicio operativo. No los usamos para crear perfiles de marketing.
+            </p>
+            <p>
+              <strong class="text-[color:var(--color-ink)] font-medium">No usamos analítica.</strong>
+              No tenemos Google Analytics, Meta Pixel, ni herramientas similares instaladas. Si eso cambia, lo
+              diremos aquí con fecha antes de activarlo.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">03 — Para qué los usamos</div>
+          <h2 class="h-card mb-5">Responder, operar, cumplir.</h2>
+          <div class="t-body space-y-4">
+            <p>Los datos anteriores los usamos exclusivamente para:</p>
+            <ul class="list-disc pl-5 space-y-2">
+              <li>Responder a tu consulta y, si procede, enviarte una propuesta técnica.</li>
+              <li>Mantener la seguridad y disponibilidad del sitio.</li>
+              <li>Cumplir con obligaciones legales, contables o fiscales aplicables.</li>
+            </ul>
+            <p>
+              La base legal cuando el RGPD (UE/EEE/Reino Unido) aplica es el
+              <em>interés legítimo</em> (responder a una consulta iniciada por ti) o, cuando corresponda, el
+              <em>consentimiento</em> que tú mismo das al escribirnos.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">04 — Con quién los compartimos</div>
+          <h2 class="h-card mb-5">Un proveedor de hosting. Nada más.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              No vendemos ni alquilamos datos personales. Los compartimos sólo con proveedores que necesitamos
+              para operar el sitio, bajo contrato y siempre como <em>encargados del tratamiento</em>:
+            </p>
+            <ul class="list-disc pl-5 space-y-2">
+              <li>
+                <strong class="text-[color:var(--color-ink)] font-medium">Vercel Inc.</strong> (EE. UU.) —
+                hosting, CDN y registros técnicos del sitio.
+              </li>
+              <li>
+                El <strong class="text-[color:var(--color-ink)] font-medium">proveedor de correo</strong> que
+                opera los buzones <span class="t-mono">@beautomata.com</span>, cuando nos escribes directamente.
+              </li>
+            </ul>
+            <p>
+              También podemos divulgar datos cuando lo exija una autoridad competente mediante requerimiento
+              legal vinculante.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">05 — Transferencias internacionales</div>
+          <h2 class="h-card mb-5">Operamos desde EE. UU.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              Al estar establecidos en Estados Unidos, cualquier dato que nos envíes desde fuera viaja y se
+              almacena en EE. UU. Si nos escribes desde el Espacio Económico Europeo o Reino Unido, esa
+              transferencia internacional se realiza con base en las
+              <em>Cláusulas Contractuales Tipo</em> de la Comisión Europea o mecanismos equivalentes reconocidos
+              por la legislación aplicable.
+            </p>
+            <p>
+              Para residentes de América Latina (Brasil, México, Colombia, Argentina, Chile, Perú, Uruguay,
+              Ecuador y demás países con leyes de protección de datos), las transferencias internacionales a
+              Estados Unidos se realizan conforme a los mecanismos previstos en cada jurisdicción —
+              principalmente cláusulas contractuales, consentimiento del titular, o los estándares equivalentes
+              reconocidos por la autoridad nacional correspondiente (ANPD en Brasil, INAI en México, SIC en
+              Colombia, AAIP en Argentina, entre otras).
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">06 — Cuánto tiempo los guardamos</div>
+          <h2 class="h-card mb-5">Lo que la conversación y la ley exijan — ni más.</h2>
+          <div class="t-body space-y-4">
+            <ul class="list-disc pl-5 space-y-2">
+              <li>
+                <strong class="text-[color:var(--color-ink)] font-medium">Consultas por correo</strong> — hasta
+                24 meses después del último intercambio, salvo que exista una relación comercial activa.
+              </li>
+              <li>
+                <strong class="text-[color:var(--color-ink)] font-medium">Registros técnicos de Vercel</strong> —
+                según la política de retención de Vercel (normalmente unos pocos días a semanas).
+              </li>
+              <li>
+                <strong class="text-[color:var(--color-ink)] font-medium">Documentación contractual, contable
+                y fiscal</strong> — durante los plazos que exija la ley aplicable.
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">07 — Tus derechos</div>
+          <h2 class="h-card mb-5">Acceso, rectificación, supresión, oposición.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              Según dónde residas, puedes ejercer alguno o todos los siguientes derechos — al amparo del
+              <em>RGPD</em> (UE/EEE/Reino Unido), <em>CCPA/CPRA</em> (California), <em>LGPD</em> (Brasil),
+              <em>LFPDPPP</em> (México), <em>Ley 1581/2012</em> (Colombia), <em>Ley 25.326</em> (Argentina),
+              <em>Ley 19.628</em> (Chile), <em>Ley 29733</em> (Perú) y demás leyes nacionales aplicables:
+            </p>
+            <ul class="list-disc pl-5 space-y-2">
+              <li>Acceder a los datos personales que tenemos sobre ti.</li>
+              <li>Rectificar datos inexactos.</li>
+              <li>Solicitar su supresión.</li>
+              <li>Oponerte al tratamiento o restringirlo.</li>
+              <li>Solicitar la portabilidad de los datos.</li>
+              <li>Retirar el consentimiento cuando éste sea la base legal.</li>
+              <li>Presentar una reclamación ante tu autoridad de control (AEPD en España, ANPD en Brasil, INAI en México, SIC en Colombia, AAIP en Argentina, entre otras).</li>
+            </ul>
+            <p>
+              Para ejercer cualquiera, escríbenos a
+              <a href="mailto:legal@beautomata.com" class="underline underline-offset-4 hover:text-[color:var(--color-ink)]">legal@beautomata.com</a>
+              indicando la ley aplicable y el derecho que deseas ejercer. Respondemos en un plazo máximo de
+              30 días, con independencia de tu jurisdicción.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">08 — Cookies</div>
+          <h2 class="h-card mb-5">No usamos cookies no esenciales.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              Este sitio no instala cookies de analítica, publicidad o seguimiento. Nuestro proveedor de
+              hosting puede usar cookies estrictamente técnicas para seguridad y balanceo de carga — no se
+              usan para perfilarte. Si en el futuro añadimos analítica, lo anunciaremos aquí y habilitaremos
+              el mecanismo de consentimiento correspondiente.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">09 — Menores</div>
+          <h2 class="h-card mb-5">Este sitio no se dirige a menores de 16 años.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              No recopilamos conscientemente datos de menores. Si crees que un menor nos ha enviado datos
+              personales, escríbenos y los eliminaremos.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">10 — Cambios</div>
+          <h2 class="h-card mb-5">Si cambia, lo verás fechado aquí.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              Podemos actualizar esta política para reflejar cambios legales, técnicos o de alcance de nuestros
+              servicios. Cuando haya modificaciones sustanciales lo indicaremos en la fecha de
+              <em>Última actualización</em> al inicio de este documento.
+            </p>
+          </div>
+        </div>
+
+        <hr class="hr-subtle" />
+
+        <div>
+          <div class="label-upper mb-4">11 — Contacto</div>
+          <h2 class="h-card mb-5">Un correo, una persona que responde.</h2>
+          <div class="t-body space-y-4">
+            <p>
+              Si tienes cualquier pregunta sobre esta política o sobre cómo tratamos tus datos, escríbenos a
+              <a href="mailto:legal@beautomata.com" class="underline underline-offset-4 hover:text-[color:var(--color-ink)]">legal@beautomata.com</a>.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>

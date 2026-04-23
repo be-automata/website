@@ -63,6 +63,42 @@ test.describe('Language switcher', () => {
     await expect(navLink(page, 'Casos')).toBeVisible();
   });
 
+  test('privacy: ES → EN preserves section (goes to /en/privacy)', async ({ page }) => {
+    await page.goto('/privacidad');
+    await langSwitcher(page).click();
+    await page.waitForLoadState('domcontentloaded');
+
+    await expect(page).toHaveURL(/\/en\/privacy\/?$/);
+    await expect(page.locator('main h1')).toBeVisible();
+  });
+
+  test('privacy: EN → ES preserves section (goes to /privacidad)', async ({ page }) => {
+    await page.goto('/en/privacy');
+    await langSwitcher(page).click();
+    await page.waitForLoadState('domcontentloaded');
+
+    await expect(page).toHaveURL(/localhost:4321\/privacidad\/?$/);
+    await expect(page.locator('main h1')).toBeVisible();
+  });
+
+  test('terms: ES → EN preserves section (goes to /en/terms)', async ({ page }) => {
+    await page.goto('/terminos');
+    await langSwitcher(page).click();
+    await page.waitForLoadState('domcontentloaded');
+
+    await expect(page).toHaveURL(/\/en\/terms\/?$/);
+    await expect(page.locator('main h1')).toBeVisible();
+  });
+
+  test('terms: EN → ES preserves section (goes to /terminos)', async ({ page }) => {
+    await page.goto('/en/terms');
+    await langSwitcher(page).click();
+    await page.waitForLoadState('domcontentloaded');
+
+    await expect(page).toHaveURL(/localhost:4321\/terminos\/?$/);
+    await expect(page.locator('main h1')).toBeVisible();
+  });
+
   test('case study detail: ES → EN keeps the same case', async ({ page }) => {
     // Start from the ES cases index, click the first case, then switch language.
     await page.goto('/casos');
