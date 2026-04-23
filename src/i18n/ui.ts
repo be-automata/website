@@ -48,6 +48,10 @@ const slugTranslations: Record<string, string> = {
   capabilities: 'capacidades',
   casos: 'cases',
   cases: 'casos',
+  privacidad: 'privacy',
+  privacy: 'privacidad',
+  terminos: 'terms',
+  terms: 'terminos',
 };
 
 export function translatePath(fromLang: Lang, toLang: Lang, pathname: string): string {
