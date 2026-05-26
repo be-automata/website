@@ -2,6 +2,25 @@
 
 All notable changes to the Automata website are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use the 4-digit `MAJOR.MINOR.PATCH.MICRO` scheme.
 
+## [0.1.3.0] - 2026-05-25
+
+### Changed
+
+- **ES copy rewritten for non-technical buyers** (founders/CEOs, ops leads, marketing/PM). Friends reviewing the site said the original copy was too technical for the actual target audience. Voice and ladder structure preserved; vocabulary swapped consistently across the homepage, capabilities page, case studies, and casos index. Load-bearing translations: "agente de IA" → "sistema de IA", "puertas de revisión" → "un humano aprueba antes de cada acción importante", "autoridad acotada" → "permisos limitados" (with credit-card metaphor for `tapioca`), "framework-agnóstico" pillar → "No te encadenamos a una plataforma".
+- **Capabilities page (`/capacidades`) restructured outcome-first.** The four group titles flipped from mechanism (`Orquestación de agentes`, `RAG y conocimiento`, …) to outcomes (`IA que ejecuta trabajo real, sin supervisión constante`, `Encuentra respuestas en tus documentos — sin inventar`, `IA que no se sale del carril`, `Funciona donde ya trabajas, no en una plataforma aparte`). Plain-language bullets on top; original technical bullets demoted into collapsed `<details>` blocks for engineering readers.
+- **Maturity ladder names softened** for L3–L5: `Operando` → `En uso real`, `Adaptativo` → `Atento`, `Auto-mejorando` → `Mejora con cada uso`. Quotes/signals stay diagnostic.
+- **Footer tagline** (every page, via `src/i18n/ui.ts`) — `"Agentes de IA en producción — con puertas de revisión, no a ciegas."` → `"IA que ejecuta trabajo real — con un humano que aprueba antes de cada paso importante."`.
+- **Case studies (`orch-agents`, `tapioca`)** open with a new "En resumen — para no-técnicos" block. `tapioca` corrals all crypto-specific jargon (USDC, EIP-7702, ZeroDev, AES-256-GCM) into a clearly-labeled "Evidencia técnica" section so non-crypto readers can skip it.
+
+### Added
+
+- **`CapabilityGroup.astro` optional `details[]` prop** with native `<details><summary>Detalles técnicos</summary>` rendering. Lets pages show plain-language outcomes on top of each card with the deep mechanics tucked behind a click, no new component, no Tailwind class system needed.
+
+### Notes
+
+- EN locale (`/en/*`) intentionally **not** rewritten this pass. Ship ES first, validate with the friends who flagged the issue, then port EN as a first-class draft (not a literal translation).
+- `.gitignore` now excludes `.gstack/` and `.superset/` (local AI-tooling artifacts).
+
 ## [0.1.2.0] - 2026-04-22
 
 ### Added

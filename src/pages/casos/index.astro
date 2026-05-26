@@ -9,16 +9,16 @@ const entries = await getCollection('case-studies', ({ data }) => data.lang === 
 const sorted = entries.sort((a, b) => a.data.order - b.data.order);
 
 const problemMap: Record<string, string> = {
-  'orch-agents': 'Enrutamiento tribal de agentes — nadie sabe por qué se eligió cada uno.',
-  tapioca: 'Un agente con acceso a dinero — radio de impacto sin delimitar.',
+  'orch-agents': 'El criterio de qué IA atendía cada tarea vivía sólo en la cabeza de una persona del equipo.',
+  tapioca: 'Una IA con acceso a dinero del usuario, sin frenos claros sobre qué podía hacer si algo salía mal.',
 };
 const solutionMap: Record<string, string> = {
-  'orch-agents': 'WORKFLOW.md como fuente única de verdad, diffable y versionado.',
-  tapioca: 'Session keys acotadas por token + simulación antes de ejecutar.',
+  'orch-agents': 'Un archivo de texto que cualquiera puede leer y revisar, con historial completo de cambios.',
+  tapioca: 'La IA sólo puede mover el dinero que autorizas, como una tarjeta de crédito con límite — y prueba cada movimiento antes de hacerlo real.',
 };
 const statusMap: Record<string, string> = {
-  'orch-agents': 'OSS · MIT · v0.4.0',
-  tapioca: 'Producción · BUSL · v0.2.0',
+  'orch-agents': 'Código abierto · MIT · v0.4.0',
+  tapioca: 'En uso real · v0.2.0',
 };
 
 const cases = sorted.map((entry) => ({
@@ -32,8 +32,8 @@ const cases = sorted.map((entry) => ({
 
 const ctaSteps = [
   { title: 'Agenda una llamada', body: '30 minutos. Evaluamos tu caso, te damos un timeline y una arquitectura realista.' },
-  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, stack elegido y por qué.' },
-  { title: 'Empezamos', body: 'Primer deploy en menos de 4 semanas desde el kickoff.' },
+  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, herramientas elegidas y por qué.' },
+  { title: 'Empezamos', body: 'Primer lanzamiento en menos de 4 semanas desde el arranque.' },
 ];
 ---
 

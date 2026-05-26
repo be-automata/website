@@ -12,10 +12,10 @@ import CodeArtifact from '@components/CodeArtifact.astro';
 const lang = 'es';
 
 const stats = [
-  { value: '4', label: 'Semanas', caption: 'Tiempo medio al primer deploy desde el kickoff.' },
-  { value: '18+', label: 'Agentes', caption: 'Definiciones de agentes listas en orch-agents, auditables en el repo.' },
-  { value: '2', label: 'En producción', caption: 'Sistemas en vivo con código abierto y commit history público.' },
-  { value: '15+', label: 'Años shippeando', caption: 'No aprendimos IA este mes. Llevamos quince años entregando software.' },
+  { value: '4', label: 'Semanas', caption: 'Tiempo medio hasta el primer lanzamiento desde el arranque del proyecto.' },
+  { value: '18+', label: 'Roles de IA', caption: 'Roles listos en nuestro proyecto abierto orch-agents, revisables línea por línea en el repositorio.' },
+  { value: '2', label: 'En uso real', caption: 'Sistemas funcionando con clientes reales, código abierto e historial público de cambios.' },
+  { value: '15+', label: 'Años entregando', caption: 'No aprendimos IA este mes. Llevamos quince años entregando software a clientes reales.' },
 ];
 
 const workflowYaml = `templates:
@@ -38,108 +38,108 @@ agents:
 
 const tiers = [
   {
-    signal: 'Tengo una idea, no tengo código.',
-    diagnosis: 'L0 Tribal → L1 Explorando',
-    deliverable: 'Discovery Sprint — roadmap técnico priorizado, análisis build-vs-buy, selección de stack.',
+    signal: 'Tengo una idea, todavía no he construido nada.',
+    diagnosis: 'De: una idea suelta. A: claridad de qué construir y con qué.',
+    deliverable: 'Diagnóstico inicial — qué construir primero, decisión clara de construir o comprar, y qué herramientas usar.',
     duration: '3–5 días',
   },
   {
-    signal: 'Construí algo con Cursor o Bolt y tengo miedo de shippearlo.',
-    diagnosis: 'L1 Explorando → L2 Legible',
-    deliverable: 'Vibe Check — auditoría de código, agujeros de seguridad, arquitectura, plan de remediación priorizado.',
+    signal: 'Probé algo con Cursor o Bolt y me da miedo lanzarlo a clientes reales.',
+    diagnosis: 'De: prototipo frágil. A: código revisado y listo para usuarios.',
+    deliverable: 'Revisión completa — código, agujeros de seguridad, arquitectura, y plan claro de qué arreglar primero.',
     duration: '1 semana',
   },
   {
-    signal: 'Necesito shippear un agente en producción.',
-    diagnosis: 'L2 Legible → L3 Operando',
-    deliverable: 'Build & Ship — un workflow de agente en producción, con WORKFLOW.md como handoff.',
+    signal: 'Necesito una IA que haga este trabajo real, no una demo.',
+    diagnosis: 'De: planos sobre papel. A: un sistema funcionando con clientes reales.',
+    deliverable: 'Construir y lanzar — un sistema de IA en uso real, con un documento que tu equipo puede leer y mantener.',
     duration: '2–6 semanas',
   },
   {
     signal: 'Ya está vivo y necesito que siga mejorando.',
-    diagnosis: 'L3 Operando → L5 Auto-mejorando',
-    deliverable: 'Partnership — principal designado, optimización continua, expansión de capacidades.',
+    diagnosis: 'De: sistema vivo. A: sistema que mejora con cada uso.',
+    deliverable: 'Acompañamiento mensual — un punto de contacto fijo, mejoras continuas, y expansión de capacidades.',
     duration: 'mensual',
   },
 ];
 
 const steps = [
   {
-    label: 'Discover',
-    title: 'Auditamos lo que ya existe.',
-    body: 'Diagnóstico del estado actual y del conocimiento tribal que vive solo en cabezas. Sin preguntas genéricas — venimos a entender tu sistema.',
+    label: 'Diagnosticar',
+    title: 'Revisamos lo que ya existe.',
+    body: 'Vemos qué tienes hoy y qué procesos viven sólo en la cabeza de tu equipo. Sin preguntas genéricas — venimos a entender tu sistema.',
   },
   {
-    label: 'Structure',
+    label: 'Estructurar',
     title: 'Hacemos legible lo que no lo era.',
-    body: 'Convertimos procesos en schemas, reglas de validación, y modelos de datos canónicos. El primer entregable casi siempre es un artefacto diffable.',
+    body: 'Convertimos esos procesos en reglas claras que una máquina (o una persona nueva) puede seguir. El primer entregable casi siempre es un documento que cualquiera puede leer y revisar.',
   },
   {
-    label: 'Ship',
-    title: 'Entregamos con puertas de revisión.',
-    body: 'Sistemas de IA en producción con trazabilidad, autoridad acotada, y simulación antes de ejecutar. Sin atajos en seguridad.',
+    label: 'Lanzar',
+    title: 'Lanzamos con un humano en el control.',
+    body: 'Sistemas de IA en uso real con registro de cada decisión, permisos limitados, y prueba del resultado antes de aplicarlo. Sin atajos en seguridad.',
   },
 ];
 
 const cases = [
   {
     title: 'orch-agents',
-    tagline: 'Infraestructura de orquestación de agentes para repos de GitHub y tableros de Linear.',
-    problem: 'Enrutamiento tribal de agentes — nadie sabe por qué se eligió cada uno.',
-    solution: 'WORKFLOW.md como fuente única de verdad, diffable y versionado.',
-    status: 'OSS · MIT · v0.4.0',
+    tagline: 'Sistema que decide qué IA atiende cada tarea en GitHub y Linear — sin que el conocimiento viva en la cabeza de una persona.',
+    problem: 'El criterio de qué IA atendía cada tarea vivía sólo en la cabeza de una persona del equipo.',
+    solution: 'Un archivo de texto que cualquiera puede leer y revisar, con historial completo de cambios.',
+    status: 'Código abierto · MIT · v0.4.0',
     href: '/casos/orch-agents',
   },
   {
     title: 'tapioca.money',
-    tagline: 'Optimizador autónomo de rendimientos DeFi con agente AI en Base.',
-    problem: 'Un agente con acceso a dinero — radio de impacto sin delimitar.',
-    solution: 'Session keys acotadas por token + simulación antes de ejecutar.',
-    status: 'Producción · BUSL · v0.2.0',
+    tagline: 'Una IA que mueve dinero real entre protocolos cripto para optimizar rendimientos — con frenos de seguridad.',
+    problem: 'Una IA con acceso a dinero del usuario, sin frenos claros sobre qué podía hacer si algo salía mal.',
+    solution: 'La IA sólo puede mover el dinero que autorizas, como una tarjeta de crédito con límite — y prueba cada movimiento antes de hacerlo real.',
+    status: 'En uso real · v0.2.0',
     href: '/casos/tapioca',
   },
 ];
 
 const pillars = [
   {
-    title: 'Framework-agnóstico',
-    body: 'No te vendemos nuestra plataforma. Para cada proyecto elegimos el stack que sirve al nivel en el que estás — y te explicamos por qué antes de escribir una línea. Servimos al problema, no al framework. Los casos de estudio muestran la decisión en contexto.',
-    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">No te vendemos nuestra plataforma.</strong> Para cada proyecto elegimos el stack que sirve al nivel en el que estás — y te explicamos por qué antes de escribir una línea. Servimos al <em>problema</em>, no al framework.',
+    title: 'No te encadenamos a una plataforma',
+    body: 'No te vendemos una plataforma propia. Para cada proyecto elegimos las herramientas que sirven a tu situación — y te explicamos por qué antes de escribir una línea. Servimos al problema, no a una herramienta concreta. Los casos de estudio muestran la decisión en contexto.',
+    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">No te vendemos una plataforma propia.</strong> Para cada proyecto elegimos las herramientas que sirven a tu situación — y te explicamos por qué antes de escribir una línea. Servimos al <em>problema</em>, no a una herramienta concreta.',
   },
   {
-    title: 'Seguridad desde el primer commit',
-    body: 'Autoridad acotada, simulación antes de ejecutar, puertas de revisión, rate limits, revocabilidad. No es un checklist al final — es la arquitectura desde el día uno.',
-    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">Autoridad acotada, simulación antes de ejecutar, puertas de revisión.</strong> No es un checklist al final — es la <em>arquitectura desde el día uno</em>.',
+    title: 'Seguridad desde el primer día',
+    body: 'Permisos limitados, prueba del resultado antes de aplicarlo, revisión humana, controles de uso, revocable en cualquier momento. No es un checklist al final — es la arquitectura desde el día uno.',
+    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">Permisos limitados, prueba antes de aplicar, revisión humana.</strong> No es un checklist al final — es la <em>arquitectura desde el día uno</em>.',
   },
   {
-    title: 'Legibilidad antes que magia',
-    body: 'El bottleneck rara vez es el modelo. Es que tu organización no puede describir su propio trabajo en una forma que la máquina pueda seguir. Nuestro primer entregable casi siempre es un artefacto que hace el conocimiento tribal diffable.',
-    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">El bottleneck rara vez es el modelo.</strong> Es que tu organización no puede describir su propio trabajo en una forma que la máquina pueda seguir. Nuestro primer entregable casi siempre es un <em>artefacto diffable</em>.',
+    title: 'Procesos escritos, no en cabezas',
+    body: 'El cuello de botella rara vez es la IA. Es que tu organización no ha descrito su propio trabajo en una forma que una máquina (o una persona nueva) pueda seguir. Nuestro primer entregable casi siempre es un documento que vuelve ese conocimiento revisable por cualquiera.',
+    bodyHtml: '<strong class="text-[color:var(--color-ink)] font-medium">El cuello de botella rara vez es la IA.</strong> Es que tu organización no ha descrito su propio trabajo en una forma que una máquina (o una persona nueva) pueda seguir. Nuestro primer entregable casi siempre es un <em>documento que cualquiera puede leer y revisar</em>.',
   },
 ];
 
 const ctaSteps = [
   { title: 'Agenda una llamada', body: '30 minutos. Evaluamos tu caso, te damos un timeline y una arquitectura realista.' },
-  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, stack elegido y por qué.' },
-  { title: 'Empezamos', body: 'Primer deploy en menos de 4 semanas desde el kickoff.' },
+  { title: 'Propuesta técnica', body: 'En 5 días desde la llamada. Arquitectura, fases, costes, herramientas elegidas y por qué.' },
+  { title: 'Empezamos', body: 'Primer lanzamiento en menos de 4 semanas desde el arranque.' },
 ];
 ---
 
 <BaseLayout
   lang={lang}
   pathname="/"
-  title="Automata — Agentes de IA en producción"
-  description="Diseñamos, construimos y operamos agentes de IA con puertas de revisión, autoridad acotada y trazabilidad. Para equipos que van a poner código de IA donde importa."
+  title="Automata — IA que ejecuta trabajo real, no demos"
+  description="Construimos sistemas de IA que toman decisiones y ejecutan trabajo real — con un humano que aprueba los pasos importantes, permisos limitados, y registro de cada decisión. Para equipos que van a poner IA donde importa."
 >
   <Hero
     variant="hero"
     status="Aceptando proyectos · ES · EN · LATAM"
-    titleHtml="¿Tu agente de IA está listo para <em>producción</em> — o solo para la <em>demo</em>?"
-    title="¿Tu agente de IA está listo para producción — o solo para la demo?"
-    lead="Diseñamos, construimos y operamos agentes de IA con puertas de revisión, autoridad acotada y trazabilidad. Sin atajos, sin vibes. Para equipos que van a poner código de IA donde importa."
+    titleHtml="¿Tu IA está lista para <em>uso real con clientes</em> — o sólo para la <em>demo</em>?"
+    title="¿Tu IA está lista para uso real con clientes — o sólo para la demo?"
+    lead="Construimos sistemas de IA que toman decisiones por sí mismos — con un humano que aprueba antes de cada acción importante, permisos limitados, y registro de todo lo que hacen. Sin atajos, sin improvisar. Para equipos que van a poner IA donde importa."
     primaryCta={{ label: 'Agendar llamada de descubrimiento', href: '#contacto' }}
     secondaryCta={{ label: 'Ver casos de estudio', href: '/casos' }}
-    microline="ES · EN — Basado en LATAM · 15+ años shippeando software"
+    microline="ES · EN — Basado en LATAM · 15+ años entregando software"
   />
 
   <Ladder
@@ -147,7 +147,7 @@ const ctaSteps = [
     label="Escalera"
     headingHtml="¿Por dónde <em>estás</em>?"
     heading="¿Por dónde estás?"
-    lead="Nadie llega diciendo “quiero un agente”. Llegan diciendo “tengo este problema”. Identifícate en la frase — cada nivel tiene un entregable con precio y duración claros."
+    lead="Nadie llega diciendo “quiero un sistema de IA”. Llegan diciendo “tengo este problema”. Identifícate en la frase — cada nivel tiene un entregable con precio y duración claros."
     tiers={tiers}
     cta={{ label: 'Empezar con una conversación', href: '#contacto' }}
   />
@@ -181,10 +181,10 @@ const ctaSteps = [
 
   <CodeArtifact
     index="05"
-    label="Artefacto"
-    headingHtml="Tribal → legible, en <em>un solo archivo</em>."
-    heading="Tribal → legible, en un solo archivo."
-    lead="Este es el WORKFLOW.md real que corre orch-agents. Todo el enrutamiento de agentes que antes vivía en una cabeza, ahora vive en un commit."
+    label="Cómo se ve"
+    headingHtml="El conocimiento que vivía en una cabeza, ahora <em>vive en un archivo</em>."
+    heading="El conocimiento que vivía en una cabeza, ahora vive en un archivo."
+    lead="Este es un fragmento del archivo de texto real que dirige orch-agents. El criterio que antes vivía sólo en la cabeza de una persona — qué IA atiende cada situación — ahora vive en un archivo que cualquiera puede leer y revisar."
     filename="WORKFLOW.md"
     lang="yaml"
     code={workflowYaml}
