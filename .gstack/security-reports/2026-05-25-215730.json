@@ -72,9 +72,10 @@
       "impact": "Production site hijack via a single compromised credential. Reputation/SEO damage. With apex redirect to www, attack lands on both hosts.",
       "recommendation": "Enable on main (Settings → Branches → Add rule): (1) Require pull request before merging (1 approval — you can self-approve in solo mode by reviewing a separate branch), (2) Require signed commits (this is the highest-value low-friction control — adds a second factor: an attacker needs your GPG/SSH signing key, not just your GitHub token), (3) Include administrators (otherwise you bypass your own rules). Alternative for solo workflow: at minimum enable 'require signed commits' — it's friction-free if you already sign and adds real defense.",
       "remediation_effort": "~5 minutes (GitHub Settings UI). If you already have a GPG key set up, signed-commits alone is the highest-leverage single setting.",
-      "resolved": false,
-      "resolution_pending": "post-merge",
-      "resolution_plan": "After the chore/security-hardening PR merges to main, apply branch protection via: gh api -X PUT repos/be-automata/website/branches/main/protection -F required_status_checks=null -F enforce_admins=true -F required_pull_request_reviews=null -F restrictions=null -F required_signatures=true -F allow_force_pushes=false -F allow_deletions=false. Pre-flight: verify `git config --get user.signingkey` is set and `git log -1 --show-signature` reports Good signature. If pre-flight fails, do not apply — produce SSH-signing setup runbook first."
+      "resolved": true,
+      "resolved_date": "2026-05-26",
+      "resolved_via": "gh api PUT /repos/be-automata/website/branches/main/protection with required_signatures=true, enforce_admins=true, allow_force_pushes=false, allow_deletions=false (no required_status_checks or required_pull_request_reviews — solo workflow).",
+      "resolved_notes": "Initial signing pre-flight failed (no user.signingkey configured despite user belief). Created dedicated SSH signing key ~/.ssh/id_ed25519_signing (ed25519, no passphrase, comment 'lespinoza.developer@gmail.com — git signing'). Set commit.gpgsign=true globally so all repos sign by default. Registered the public key on GitHub as a Signing Key. Verified locally via git log --show-signature on test commits. Verified GitHub-side via fresh GET on the protection endpoint."
     },
     {
       "id": 3,
