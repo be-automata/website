@@ -4,6 +4,8 @@ import SectionHeader from './SectionHeader.astro';
 interface Group {
   title: string;
   items: string[];
+  details?: string[];
+  detailsLabel?: string;
 }
 
 interface Props {
@@ -46,9 +48,41 @@ const { index = '03', label = 'Capacidades', heading, headingHtml, lead, groups 
                 </li>
               ))}
             </ul>
+            {g.details && g.details.length > 0 && (
+              <details class="capability-details mt-8 pt-6 border-t border-[color:var(--color-border)]">
+                <summary class="t-mono text-[color:var(--color-ink-muted)] cursor-pointer hover:text-[color:var(--color-ink)] transition-colors">
+                  {g.detailsLabel ?? 'Detalles técnicos'}
+                </summary>
+                <ul class="space-y-3 mt-5">
+                  {g.details.map((item) => (
+                    <li class="flex gap-4 items-start t-caption text-[color:var(--color-ink-muted)]">
+                      <span class="t-mono mt-1 min-w-[1rem]">·</span>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            )}
           </div>
         ))
       }
     </div>
   </div>
 </section>
+
+<style>
+  .capability-details > summary {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .capability-details > summary::-webkit-details-marker { display: none; }
+  .capability-details > summary::before {
+    content: '+';
+    font-family: var(--font-mono, ui-monospace, monospace);
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+  .capability-details[open] > summary::before { content: '−'; }
+</style>
