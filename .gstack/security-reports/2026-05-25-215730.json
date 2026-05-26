@@ -49,9 +49,10 @@
       "remediation_effort": "~10 minutes (vercel.json edit + verify with curl after deploy)",
       "resolved": true,
       "resolved_date": "2026-05-25",
-      "resolved_commit": "e10897e",
-      "resolved_via": "branch chore/security-hardening (PR pending) — vercel.json updated with CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. CSP starts permissive ('unsafe-inline' for script-src/style-src) to accommodate Astro/Tailwind inline injections; tighten to nonce/hash in follow-up.",
-      "resolved_notes": "Post-deploy verification required: `curl -sI -L https://www.beautomata.com/` should show all four new headers. resolved_commit will be backfilled to the squash-merge SHA after PR merge."
+      "resolved_commit": "6c067c3",
+      "resolved_branch_commit": "e10897e",
+      "resolved_via": "PR #5 (squash-merged to main 2026-05-26T03:08:48Z). vercel.json updated with CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. CSP starts permissive ('unsafe-inline' for script-src/style-src) to accommodate Astro/Tailwind inline injections; tighten to nonce/hash in follow-up.",
+      "resolved_notes": "Verified live 2026-05-26: curl -sI -L https://www.beautomata.com/ returns all four new headers (content-security-policy, x-content-type-options: nosniff, referrer-policy: strict-origin-when-cross-origin, permissions-policy). Also verified on /capacidades."
     },
     {
       "id": 2,
@@ -95,8 +96,9 @@
       "remediation_effort": "~2 minutes (move two lines in package.json, re-run `npm install`, re-run `npm audit --omit=dev` to verify clean baseline).",
       "resolved": true,
       "resolved_date": "2026-05-25",
-      "resolved_commit": "1c4d8f7",
-      "resolved_via": "branch chore/security-hardening (PR pending) — @astrojs/check moved to devDependencies. typescript not moved this pass (kept scope tight).",
+      "resolved_commit": "6c067c3",
+      "resolved_branch_commit": "1c4d8f7",
+      "resolved_via": "PR #5 (squash-merged to main 2026-05-26T03:08:48Z) — @astrojs/check moved to devDependencies. typescript not moved this pass (kept scope tight).",
       "resolved_notes": "Audit went from 9 vulns (2 high, 6 moderate, 1 low) to 3 (1 high, 1 moderate, 1 low). The 3 remaining are real prod-tree CVEs (devalue HIGH GHSA-77vg-94rm-hx3p, astro MODERATE GHSA-j687-52p2-xcff XSS in define:vars, @astrojs/mdx LOW via astro) that were masked by the dev-tooling noise. They need their own follow-up: devalue is non-breaking npm audit fix; astro requires 6.x major upgrade. For this static-output marketing site, reachability is low (no dynamic deserialization, no attacker-controlled define:vars), but worth tracking. resolved_commit will be backfilled to the squash-merge SHA after PR merge."
     }
   ],
