@@ -33,3 +33,7 @@ scripts/assets/*.ttf
 # playwright
 playwright-report/
 test-results/
+
+# AI tools
+.gstack
+.superset
