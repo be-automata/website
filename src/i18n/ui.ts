@@ -16,7 +16,7 @@ export const ui = {
     'cta.book': 'Agendar llamada de descubrimiento',
     'cta.cases': 'Ver casos de estudio',
     'cta.process': 'Ver el proceso completo',
-    'footer.tag': 'Agentes de IA en producción — con puertas de revisión, no a ciegas.',
+    'footer.tag': 'IA que ejecuta trabajo real — con un humano que aprueba antes de cada paso importante.',
     'footer.rights': 'Todos los derechos reservados',
     'lang.switch': 'EN',
   },

@@ -2,7 +2,7 @@
 caseSlug: orch-agents
 lang: es
 title: orch-agents
-tagline: De enrutamiento tribal a legibilidad como infraestructura — un agente orchestator para repos de GitHub y tableros de Linear.
+tagline: De conocimiento que vive sólo en cabezas a un archivo que cualquiera puede leer — un sistema que decide qué IA atiende cada tarea en GitHub y Linear.
 stack:
   - TypeScript
   - Claude Agent SDK
@@ -15,17 +15,23 @@ repoUrl: https://github.com/be-automata/orch-agents
 order: 1
 ---
 
+## En resumen — para no-técnicos
+
+Un equipo tenía mucho conocimiento sobre **qué tarea debía atender cada IA** — pero ese conocimiento vivía sólo en la cabeza de algunos desarrolladores. Cuando esa persona se iba de vacaciones, el sistema dejaba de funcionar bien.
+
+Construimos un archivo de texto que captura ese criterio — y un sistema que lo lee para decidir qué hacer ante cada nueva tarea. Hoy cualquier persona nueva (o cualquier IA nueva) puede leerlo en cinco minutos y ponerse al día. El conocimiento dejó de ser frágil.
+
 ## El diagnóstico
 
-> *"Todo desarrollador tiene conocimiento tribal sobre qué agente debería encargarse de qué tarea. Vive en una sola cabeza — y se rompe en el momento que el trabajo escala más allá de esa cabeza."*
+> *"Todo equipo tiene conocimiento sobre qué IA debería encargarse de qué tarea. Vive en una sola cabeza — y se rompe en el momento que el trabajo crece más allá de esa cabeza."*
 
-Un repositorio de GitHub con issues, PRs, CI y un tablero de Linear genera decenas de decisiones al día: *revisa este PR, arregla este bug, investiga este fallo de CI, audita este label de seguridad.* Para la mayoría de equipos, ese enrutamiento vive en hilos de Slack y memoria muscular. Los asistentes de IA empeoraron el problema — ahora todos tienen **más** decisiones, no menos, y nadie puede describir *por qué* un agente fue el indicado para cierta tarea.
+Un repositorio de GitHub con incidencias, revisiones de código, pruebas automáticas y un tablero de Linear genera decenas de decisiones al día: *revisa este cambio, arregla este error, investiga este fallo, audita este pedido de seguridad.* Para la mayoría de equipos, ese criterio vive en hilos de Slack y memoria muscular. Las herramientas de IA empeoraron el problema — ahora todos tienen **más** decisiones, no menos, y nadie puede describir *por qué* cierta IA fue la indicada para cierta tarea.
 
 ## Qué estructuramos
 
-Un solo archivo: `WORKFLOW.md`.
+Un solo archivo de texto que cualquiera puede leer y revisar: `WORKFLOW.md`.
 
-Un bloque YAML que hace el enrutamiento legible para humanos *y* para máquinas:
+Un bloque de texto que hace el criterio legible para humanos *y* para máquinas:
 
 ```yaml
 templates:
@@ -47,28 +53,28 @@ agents:
     default:  quick-fix
 ```
 
-Todo lo que la organización sabe sobre *"qué agente corre ante qué señal"* ahora vive en un artefacto commitable, revisable, diffable. **Tribal → legible en un solo archivo.**
+Todo lo que la organización sabe sobre *"qué IA atiende cada situación"* ahora vive en un archivo que cualquiera puede leer, revisar, y comparar versión contra versión. **El conocimiento de una cabeza, ahora en un archivo.**
 
-## Qué shippeamos
+## Qué lanzamos
 
-- **18+ definiciones de agentes incluidas** — coder, reviewer, architect, security-architect, tester, y más
-- **Aislamiento por worktree** — cada agente corre en su propio git worktree, sin contaminación cruzada
-- **Puerta de revisión** — todo cambio pasa por revisión automatizada de código, tests y security scan antes de commit
-- **Soporte dual de trackers** — webhooks de GitHub + API nativa de Agentes de Linear (usando `createAgentActivity`, no `createComment`)
-- **Runtime orientado a seguridad** — stream de permisos NDJSON, compactación de conversación, reintentos ante sobrecarga, comando `stop` desde cualquier PR o issue
-- **Superficie de librería** — se distribuye como servicio *y* como librería TypeScript tipada, con 6 subpath exports
+- **18+ roles de IA listos** — programador, revisor, arquitecto, especialista de seguridad, encargado de pruebas, y más
+- **Cada IA en su propio espacio de trabajo** — sin pisar el trabajo de otras, sin contaminación cruzada
+- **Revisión humana antes de cada cambio importante** — todo cambio pasa por revisión automática (código, pruebas, seguridad) antes de aprobarse
+- **Funciona en las herramientas que ya usas** — GitHub y Linear, no una plataforma aparte
+- **Diseñado pensando en seguridad** — sistema de permisos visible, gestión inteligente de conversaciones largas, reintentos automáticos, y comando `stop` accesible desde cualquier incidencia o revisión
+- **Se distribuye doblemente** — como servicio listo para usar *o* como librería que tu equipo puede integrar
 
 ## Evidencia
 
-De v0.2.0 a v0.4.0 en cuatro semanas. Entre otros hitos:
+De la versión 0.2.0 a la 0.4.0 en cuatro semanas. Entre otros hitos:
 
-- Enrutamiento basado en skills reemplazó ramificación hardcodeada
-- Dispatch unificado consolidó tres rutas en una — cero código muerto
-- `WORKFLOW.md` se volvió la única fuente de verdad, sin fallbacks a variables de entorno
-- Tipos branded (PlanId, WorkItemId, ExecId, AgentSessionId) con findings de auditoría aplicados
+- El sistema aprende a usar herramientas nuevas conforme las necesita — reemplazando reglas duras que estaban en el código
+- Un único punto de entrada consolidó tres rutas en una — cero código muerto
+- `WORKFLOW.md` se volvió la única fuente de verdad, sin atajos por configuración
+- Identificadores tipados (PlanId, WorkItemId, ExecId, AgentSessionId) con hallazgos de auditoría aplicados
 
-El changelog y los commits están públicos — no hay que confiar en mi palabra.
+El historial de cambios y los commits están públicos — no hay que confiar en mi palabra.
 
 ## Qué demuestra
 
-Si ya shippeaste algo con Cursor, Bolt o Lovable y estás a un incidente de *"¿qué agente hizo qué?"* de perder confianza en tu código, esto es cómo se ve la **legibilidad como infraestructura**. No una metodología — un archivo que cualquiera puede leer.
+Si ya construiste algo con Cursor, Bolt o Lovable y estás a un incidente de *"¿qué hizo cada IA y por qué?"* de perder confianza en tu código, esto es lo que significa **conocimiento escrito, no perdido**. No una metodología — un archivo que cualquiera puede leer.
