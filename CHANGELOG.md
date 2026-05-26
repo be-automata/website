@@ -2,6 +2,16 @@
 
 All notable changes to the Automata website are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use the 4-digit `MAJOR.MINOR.PATCH.MICRO` scheme.
 
+## [0.1.3.1] - 2026-05-26
+
+### Security
+
+- **`devalue` lifted past the DoS-via-sparse-array advisory** ([GHSA-77vg-94rm-hx3p](https://github.com/advisories/GHSA-77vg-94rm-hx3p)). Resolved transitively through `astro` via `npm audit fix` (5.7.1 → 5.8.1, within astro 5.x semver). Surfaced by the `/cso` audit on 2026-05-25 after the prior `@astrojs/check → devDependencies` cleanup removed the noise that was masking it. Reachability on this static-output marketing site was already low (no dynamic deserialization at runtime), but closing the known-vulnerable version is free.
+
+### Notes
+
+- `npm audit --omit=dev` now reports 2 vulnerabilities (1 moderate, 1 low) — both transitive through `astro` itself and clear with the astro 6.x major upgrade. Not addressed in this release; tracked in `.gstack/security-reports/2026-05-25-215730.json` under `follow_up_findings_surfaced`.
+
 ## [0.1.3.0] - 2026-05-25
 
 ### Changed
