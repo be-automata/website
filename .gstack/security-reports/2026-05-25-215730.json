@@ -1,0 +1,172 @@
+{
+  "version": "2.0.0",
+  "date": "2026-05-25T21:57:30Z",
+  "mode": "daily",
+  "scope": "full",
+  "diff_mode": false,
+  "phases_run": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+  "context_summary": "Static Astro 5 marketing site (bilingual ES/EN). No backend, no DB, no API endpoints, no forms, no auth, no LLM integration, no user input handlers. Build output is pure static HTML/CSS/JS on Vercel. Public GitHub repo. Total third-party runtime deps: zero — only build-time tooling.",
+  "attack_surface": {
+    "code": {
+      "public_endpoints": 12,
+      "public_endpoints_note": "All 12 are static pages (no dynamic behavior)",
+      "authenticated": 0,
+      "admin": 0,
+      "api": 0,
+      "uploads": 0,
+      "integrations": 0,
+      "background_jobs": 0,
+      "websockets": 0
+    },
+    "infrastructure": {
+      "ci_workflows": 0,
+      "webhook_receivers": 0,
+      "container_configs": 0,
+      "iac_configs": 0,
+      "deploy_targets": 1,
+      "deploy_target_note": "Vercel (auto-deploy on push to main)",
+      "secret_management": "env vars in Vercel project (no secrets used by build itself)"
+    }
+  },
+  "findings": [
+    {
+      "id": 1,
+      "severity": "MEDIUM",
+      "confidence": 9,
+      "status": "VERIFIED",
+      "phase": 5,
+      "phase_name": "Infrastructure Shadow Surface",
+      "category": "Security Headers",
+      "fingerprint": "headers-csp-xfo-xcto-referrer-permissions",
+      "title": "No CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, or Permissions-Policy on production",
+      "file": "vercel.json",
+      "line": 1,
+      "verified_via": "curl -sI https://www.beautomata.com/ — only strict-transport-security set",
+      "description": "vercel.json contains only {\"framework\":\"astro\"}. No custom headers block. Production response only ships Strict-Transport-Security (Vercel default). Missing CSP, X-Frame-Options/CSP frame-ancestors, X-Content-Type-Options: nosniff, Referrer-Policy, Permissions-Policy.",
+      "exploit_scenario": "(1) Clickjacking — an attacker can iframe https://www.beautomata.com inside a malicious page and overlay UI to trick visitors. For a marketing site this risks reputation/phishing, not data. (2) MIME-sniffing — without X-Content-Type-Options: nosniff, a future asset misconfiguration could let a non-script file execute as one. (3) Defense in depth — if you ever add a feature that introduces an XSS sink (a comment box, a search field, dynamic OG content via search params), no CSP means zero in-browser mitigation.",
+      "impact": "Low day-1 (no auth state, no PII, no scripts). Real value as defense-in-depth for future features and brand-protection vs. iframe phishing.",
+      "recommendation": "Add a headers block to vercel.json with: default-src 'self'; frame-ancestors 'none'; script-src 'self' 'unsafe-inline' (Astro inlines small scripts — start permissive then tighten); style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; X-Content-Type-Options: nosniff; Referrer-Policy: strict-origin-when-cross-origin; Permissions-Policy: camera=(), microphone=(), geolocation=().",
+      "remediation_effort": "~10 minutes (vercel.json edit + verify with curl after deploy)",
+      "resolved": true,
+      "resolved_date": "2026-05-25",
+      "resolved_commit": "e10897e",
+      "resolved_via": "branch chore/security-hardening (PR pending) — vercel.json updated with CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy. CSP starts permissive ('unsafe-inline' for script-src/style-src) to accommodate Astro/Tailwind inline injections; tighten to nonce/hash in follow-up.",
+      "resolved_notes": "Post-deploy verification required: `curl -sI -L https://www.beautomata.com/` should show all four new headers. resolved_commit will be backfilled to the squash-merge SHA after PR merge."
+    },
+    {
+      "id": 2,
+      "severity": "MEDIUM",
+      "confidence": 9,
+      "status": "VERIFIED",
+      "phase": 4,
+      "phase_name": "CI/CD Pipeline Security",
+      "category": "Branch Protection",
+      "fingerprint": "branch-protection-main-public-repo",
+      "title": "No branch protection on `main` of public repo that auto-deploys to production",
+      "file": "github://be-automata/website/main",
+      "line": 0,
+      "verified_via": "gh api repos/be-automata/website/branches/main/protection → 404 'Branch not protected'",
+      "description": "The repo is PUBLIC and `main` auto-deploys to https://beautomata.com via Vercel's GitHub integration. There's no branch protection rule, no required reviews, no required signed commits, no required status checks. Recent history shows direct pushes to main (e.g. commit 17f8e1e, bdd7d4e, 2677636 — `chore:` commits with no PR).",
+      "exploit_scenario": "Account-takeover scenario: an attacker who compromises your GitHub credentials (leaked PAT, stolen session cookie, social-engineered re-auth flow, or a compromised gh CLI on a dev machine) can `git push origin main` arbitrary content — phishing copy, defamatory text, redirect-to-malicious-site JS — and Vercel will ship it to beautomata.com within ~60 seconds. They can then force-push to erase audit trail. With no PR requirement and no signed-commit requirement, the only gate is your own GitHub credential.",
+      "impact": "Production site hijack via a single compromised credential. Reputation/SEO damage. With apex redirect to www, attack lands on both hosts.",
+      "recommendation": "Enable on main (Settings → Branches → Add rule): (1) Require pull request before merging (1 approval — you can self-approve in solo mode by reviewing a separate branch), (2) Require signed commits (this is the highest-value low-friction control — adds a second factor: an attacker needs your GPG/SSH signing key, not just your GitHub token), (3) Include administrators (otherwise you bypass your own rules). Alternative for solo workflow: at minimum enable 'require signed commits' — it's friction-free if you already sign and adds real defense.",
+      "remediation_effort": "~5 minutes (GitHub Settings UI). If you already have a GPG key set up, signed-commits alone is the highest-leverage single setting.",
+      "resolved": false,
+      "resolution_pending": "post-merge",
+      "resolution_plan": "After the chore/security-hardening PR merges to main, apply branch protection via: gh api -X PUT repos/be-automata/website/branches/main/protection -F required_status_checks=null -F enforce_admins=true -F required_pull_request_reviews=null -F restrictions=null -F required_signatures=true -F allow_force_pushes=false -F allow_deletions=false. Pre-flight: verify `git config --get user.signingkey` is set and `git log -1 --show-signature` reports Good signature. If pre-flight fails, do not apply — produce SSH-signing setup runbook first."
+    },
+    {
+      "id": 3,
+      "severity": "LOW",
+      "confidence": 9,
+      "status": "VERIFIED",
+      "phase": 3,
+      "phase_name": "Dependency Supply Chain",
+      "category": "Dependency Hygiene",
+      "fingerprint": "astrojs-check-misclassified-as-prod-dep",
+      "title": "`@astrojs/check` listed in `dependencies` instead of `devDependencies` — causes `npm audit` to flag 9 dev-only CVEs as production",
+      "file": "package.json",
+      "line": 14,
+      "verified_via": "npm audit --omit=dev reports {high:2, moderate:6, low:1} — all traced to @astrojs/check → @astrojs/language-server → volar-service-yaml",
+      "description": "`@astrojs/check` is a CLI-only type-checker (used by `npm run check`); it does not ship code to the static build. It's currently in `dependencies`, so `npm audit --omit=dev` still reports its vulnerable transitive deps (volar-service-yaml, et al.) as production findings. This creates audit noise that masks real signal.",
+      "exploit_scenario": "No direct exploit. The flagged CVEs (volar-service-yaml et al.) only execute when a developer runs `astro check` locally; even compromised, they have no path into the static deploy artifact. The risk is OPERATIONAL: a noisy `npm audit` baseline trains you to ignore audit output, and a future real prod-dep CVE gets lost in the noise.",
+      "impact": "Audit-hygiene risk only — no runtime risk to deployed site.",
+      "recommendation": "In package.json, move `@astrojs/check` from `dependencies` to `devDependencies`. Same for `typescript` if you're not type-stripping at build time (Astro doesn't ship TS at runtime). After the move, `npm audit --omit=dev` should report clean (or nearly so), giving you a meaningful baseline to alert on.",
+      "remediation_effort": "~2 minutes (move two lines in package.json, re-run `npm install`, re-run `npm audit --omit=dev` to verify clean baseline).",
+      "resolved": true,
+      "resolved_date": "2026-05-25",
+      "resolved_commit": "1c4d8f7",
+      "resolved_via": "branch chore/security-hardening (PR pending) — @astrojs/check moved to devDependencies. typescript not moved this pass (kept scope tight).",
+      "resolved_notes": "Audit went from 9 vulns (2 high, 6 moderate, 1 low) to 3 (1 high, 1 moderate, 1 low). The 3 remaining are real prod-tree CVEs (devalue HIGH GHSA-77vg-94rm-hx3p, astro MODERATE GHSA-j687-52p2-xcff XSS in define:vars, @astrojs/mdx LOW via astro) that were masked by the dev-tooling noise. They need their own follow-up: devalue is non-breaking npm audit fix; astro requires 6.x major upgrade. For this static-output marketing site, reachability is low (no dynamic deserialization, no attacker-controlled define:vars), but worth tracking. resolved_commit will be backfilled to the squash-merge SHA after PR merge."
+    }
+  ],
+  "follow_up_findings_surfaced": {
+    "context": "After Finding #3 was resolved, three additional prod-tree CVEs became visible in npm audit --omit=dev that were previously hidden in the @astrojs/check dev-tooling noise. These are not regressions — they were always present but masked.",
+    "items": [
+      {
+        "severity": "HIGH",
+        "advisory": "GHSA-77vg-94rm-hx3p",
+        "title": "Svelte devalue: DoS via sparse array deserialization",
+        "package": "devalue@5.7.1",
+        "fix": "non-breaking npm audit fix (devalue 5.8.1)",
+        "reachability_for_this_site": "Low — devalue is transitive via astro, used for SSR state serialization. Static-output site does not run dynamic deserialization at runtime."
+      },
+      {
+        "severity": "MODERATE",
+        "advisory": "GHSA-j687-52p2-xcff",
+        "title": "Astro: XSS in define:vars via incomplete </script> tag sanitization",
+        "package": "astro@5.18.1",
+        "fix": "Requires astro 6.x major upgrade",
+        "reachability_for_this_site": "Low — site does not use define:vars. Verified via grep: zero usages in src/."
+      },
+      {
+        "severity": "LOW",
+        "advisory": "(transitive via astro)",
+        "title": "@astrojs/mdx — vulnerable astro version",
+        "package": "@astrojs/mdx",
+        "fix": "Cleared when astro upgrades to 6.x",
+        "reachability_for_this_site": "Cleared with astro upgrade."
+      }
+    ]
+  },
+  "supply_chain_summary": {
+    "direct_deps": 9,
+    "dev_deps": 3,
+    "audit_summary": "9 vulnerabilities (1 low, 6 moderate, 2 high) — ALL transitive through @astrojs/check dev-tooling, zero shipped to production",
+    "install_scripts_in_prod_deps": ["sharp (native binding build, trusted)", "esbuild (binary download, trusted)"],
+    "install_scripts_assessment": "Both are well-known, widely-used, trusted. Not findings.",
+    "lockfile_present": true,
+    "lockfile_tracked": true,
+    "tools_skipped": []
+  },
+  "phases_with_no_findings": {
+    "Phase 2 — Secrets Archaeology": "No leaked secrets in git history (AKIA, sk_live_, sk-, ghp_, xoxb-, generic patterns all clean). No .env file ever tracked. .gitignore correctly excludes .env, .env.production.",
+    "Phase 6 — Webhooks": "No webhook handlers exist. The hits were marketing copy in case-studies describing orch-agents' webhook feature.",
+    "Phase 7 — LLM/AI": "No LLM integrations. The 4 `set:html` usages (Pillars, Hero, SectionHeader, CodeArtifact) all pass developer-authored hardcoded strings; CodeArtifact's `highlight()` function HTML-escapes input before adding span wrappers (verified in src/components/CodeArtifact.astro:22-37). No user input flows into any sink.",
+    "Phase 8 — Skill Supply Chain": "No repo-local skills installed. Global skill scan skipped (would require user consent).",
+    "Phase 9 — OWASP A01-A10": "Most categories not applicable to a static site with no backend. No SQL, no auth, no SSRF, no deserialization, no admin routes. CSP/headers covered in Finding #1.",
+    "Privacy claim verification": "Privacy policy claims 'no analytics, no advertising, no tracking cookies'. Grep confirmed: no gtag/fbq/hotjar/plausible/posthog/segment/amplitude/mixpanel/clarity. Claim is honest."
+  },
+  "filter_stats": {
+    "candidates_scanned": 14,
+    "hard_exclusion_filtered": 4,
+    "hard_exclusion_reasons": "set:html callsites with author-controlled inputs (4 — Pillars/Hero/SectionHeader/CodeArtifact); install scripts on sharp+esbuild (well-known trusted); npm-audit CVEs in dev-only tooling tree (consolidated into Finding #3 rather than reported individually); unverified font-zip download in scripts/generate-og.mjs (dev-time only, no untrusted input, no CI exposure)",
+    "confidence_gate_filtered": 0,
+    "verification_filtered": 0,
+    "reported": 3
+  },
+  "totals": {
+    "critical": 0,
+    "high": 0,
+    "medium": 2,
+    "low": 1,
+    "tentative": 0
+  },
+  "trend": {
+    "prior_report_date": null,
+    "resolved": 0,
+    "persistent": 0,
+    "new": 3,
+    "direction": "first_run"
+  }
+}
