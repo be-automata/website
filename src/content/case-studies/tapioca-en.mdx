@@ -2,7 +2,7 @@
 caseSlug: tapioca
 lang: en
 title: tapioca.money
-tagline: Autonomous DeFi yield optimizer on Base — an AI agent moving real money, with scoped authority and simulation-before-execute.
+tagline: An AI that moves real money between crypto protocols to optimize yield — with safety brakes and a preview of every move before making it.
 stack:
   - Next.js 15 · React 19
   - Privy · ZeroDev SDK v5
@@ -15,33 +15,54 @@ liveUrl: https://tapioca.money
 order: 2
 ---
 
+## Summary — for non-technical readers
+
+An AI that moves real money between crypto platforms to optimize what the user earns — without the user having to babysit it every day.
+
+We built the safety brakes: the AI **can only touch the money the user authorizes** (like a credit card with a daily limit), **previews every move before making it real**, and leaves a **visible history** of every decision. The user can revoke access at any moment, without calling support.
+
+The key question wasn't *"how do we make the AI earn more?"* — it was *"what happens when it gets it wrong, and how big can the damage get?"* The architecture answers that question first.
+
 ## The diagnosis
 
-> *"An autonomous agent moving user funds across DeFi protocols has to answer one question before anything else: **when this goes wrong, what's the blast radius?**"*
+> *"An AI that moves user funds between crypto platforms has to answer one question before any other: **when this goes wrong, how big can the damage get?**"*
 
-Yield optimization is a great fit for autonomy — vaults publish APYs, rebalancing is repetitive, users don't want to babysit positions. But handing an agent the keys to a wallet *is* the problem. Generic *"agent framework"* tutorials skip the part where the agent touches money that doesn't belong to it.
+Yield optimization is an ideal case for AI — platforms publish their rates, the work is repetitive, and users don't want to babysit it every day. But handing an AI the keys to user money *is* the problem. Generic *"how to build autonomous AI"* tutorials skip the part where the AI touches money that doesn't belong to it.
 
 ## What we structured
 
-A **scoped-authority model** instead of a blanket permission:
+Limited permissions — the AI doesn't get general access, but a **narrow, controlled slice**:
 
-- **ZeroDev Kernel V3 session keys** — scoped per token, with per-asset approve/transfer caps and 7-day expiry
-- **A `SUPPORTED_TOKENS` registry** — the single artifact that defines what the agent is allowed to touch (USDC, WETH, cbBTC, EURC) and under what ceilings
-- **Simulate before execute** — every agent transaction is simulated on-chain before it's sponsored
-- **Revocable at any time** — users can kill the agent's authority from the UI without calling support
-- **AES-256-GCM encryption** for session key storage · Redis-backed rate limits · distributed locks for cron safety
+- **Permissions by type, amount, and time** — the AI can only move certain currencies, up to a certain limit, and the permissions expire automatically after 7 days
+- **A short list of what it can touch** — a single document defines exactly which currencies the AI can work with and under what ceilings
+- **Preview before applying** — every AI move is tested first (without touching real money) and only executes if it passes the test
+- **Revocable in one click** — the user can cut off the AI's permissions from the interface, without calling support
+- **Secure storage** — strong encryption for the keys · usage controls · locks that prevent the system from running twice at the same time
 
-The agent doesn't *"have access to the wallet."* It has access to a narrow, expiring, simulated, rate-limited, revocable slice of it — and the registry is the place anyone can read to know exactly what that slice is.
+The AI doesn't *"have access to the wallet."* It has access to a narrow, expiring, preview-tested, rate-limited, revocable slice of it — and the document that defines that slice is something anyone can read.
 
 ## What we shipped
 
-- **Multi-asset autonomous yield optimizer** on Base — USDC, WETH, cbBTC, EURC across Morpho, YO Protocol, Aave, Moonwell
-- **Dual wallet path** — EIP-7702 for Privy embedded wallets, ERC-4337 for external wallets (MetaMask, Coinbase), with a feature flag for graceful fallback
+- **Automatic optimization across multiple currencies** — the AI distributes user money across several crypto platforms looking for better returns
+- **Works with any wallet type** — both the product's built-in wallets and external ones the user already has (MetaMask, Coinbase)
+- **The user doesn't pay network fees** — the system covers the technical costs underneath
+- **Automated daily work** — the AI reviews and rebalances every day, in small batches, with a health panel that reports whether everything is going well
+- **Full visible history** — the user sees every action the AI takes, not just the final result
+- **Designed with taste** — a crypto product that doesn't look like a Wall Street terminal
+
+## Technical evidence
+
+For readers with a technical background, here's how it's built underneath:
+
+- **ZeroDev Kernel V3 session keys** — scoped per token, with per-asset approve/transfer caps and 7-day expiry
+- **`SUPPORTED_TOKENS` registry** — the single artifact that defines what the agent is allowed to touch (USDC, WETH, cbBTC, EURC) and under what ceilings
+- **On-chain simulation** before every agent transaction, before it's sponsored
+- **Dual wallet path** — EIP-7702 for Privy embedded wallets, ERC-4337 for external wallets, with a feature flag for graceful fallback
 - **Gasless UX** — Bundler + Paymaster sponsor every user operation
-- **Daily cron** — 50 users per batch, concurrency 10, with a `/api/agent/health` endpoint returning DB, bundler, vault, and agent-metrics status
-- **Full audit trail** — activity feed surfaces every agent action to the user, not just the outcome
-- **Design with taste** — Quicksand + a milktea/pearl/matcha palette; a DeFi product that doesn't look like a Bloomberg terminal
+- **Daily cron** — 50 users per batch, concurrency 10, with a `/api/agent/health` endpoint reporting DB, bundler, vault, and agent-metrics status
+- **AES-256-GCM encryption** for session key storage · Redis-backed rate limits · distributed locks for cron safety
+- **Protocols covered on Base mainnet** — Morpho, YO Protocol, Aave, Moonwell
 
 ## What this proves
 
-Autonomous agents don't fail because the LLM is dumb. They fail because the *authority boundary* was never written down. Tapioca's session-key registry and sim-before-execute pipeline is what *"production AI with money on the line"* actually looks like.
+Autonomous AIs don't fail because they're dumb. They fail because *the boundary of what they can and can't do was never written down*. Tapioca's permissions registry and preview-before-execute is what *"AI in real use with money on the line"* actually means.

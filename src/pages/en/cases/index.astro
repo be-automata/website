@@ -9,16 +9,16 @@ const entries = await getCollection('case-studies', ({ data }) => data.lang === 
 const sorted = entries.sort((a, b) => a.data.order - b.data.order);
 
 const problemMap: Record<string, string> = {
-  'orch-agents': 'Tribal agent routing — nobody can explain why each was chosen.',
-  tapioca: 'An agent with access to money — blast radius never drawn.',
+  'orch-agents': 'The criteria for which AI handled each task lived only in one person\'s head.',
+  tapioca: 'An AI with access to user money, with no clear brakes on what it could do if something went wrong.',
 };
 const solutionMap: Record<string, string> = {
-  'orch-agents': 'WORKFLOW.md as the single source of truth — diffable, versioned.',
-  tapioca: 'Scoped per-token session keys + simulation-before-execute.',
+  'orch-agents': 'A text file anyone can read and review, with full change history.',
+  tapioca: 'The AI can only move money you authorize, like a credit card with a daily limit — and previews every move before making it real.',
 };
 const statusMap: Record<string, string> = {
-  'orch-agents': 'OSS · MIT · v0.4.0',
-  tapioca: 'Production · BUSL · v0.2.0',
+  'orch-agents': 'Open source · MIT · v0.4.0',
+  tapioca: 'In real customer use · v0.2.0',
 };
 
 const cases = sorted.map((entry) => ({

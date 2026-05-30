@@ -28,7 +28,7 @@ export const ui = {
     'cta.book': 'Book a discovery call',
     'cta.cases': 'See case studies',
     'cta.process': 'See the full process',
-    'footer.tag': 'Production AI agents — with review gates, not vibes.',
+    'footer.tag': 'AI that does real work — with a human approving every important step.',
     'footer.rights': 'All rights reserved',
     'lang.switch': 'ES',
   },
