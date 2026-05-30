@@ -2,7 +2,7 @@
 caseSlug: orch-agents
 lang: en
 title: orch-agents
-tagline: From tribal routing to legibility as infrastructure — an agent orchestrator for GitHub repos and Linear boards.
+tagline: From knowledge that lives only in heads to a file anyone can read — a system that decides which AI handles each task on GitHub and Linear.
 stack:
   - TypeScript
   - Claude Agent SDK
@@ -15,17 +15,23 @@ repoUrl: https://github.com/be-automata/orch-agents
 order: 1
 ---
 
+## Summary — for non-technical readers
+
+A team had a lot of knowledge about **which task each AI should handle** — but that knowledge lived only in a few developers' heads. The moment one of those people went on vacation, the system stopped working well.
+
+We built a text file that captures that criteria — and a system that reads it to decide what to do with each new task. Today any new person (or any new AI) can read it in five minutes and get up to speed. The knowledge stopped being fragile.
+
 ## The diagnosis
 
-> *"Every solo dev has tribal knowledge about which agent should handle which task. It lives in one head — and breaks the moment work scales beyond that head."*
+> *"Every team has knowledge about which AI should handle which task. It lives in a single head — and breaks the moment work grows beyond that head."*
 
-A GitHub repo with issues, PRs, CI, and a Linear board generates dozens of decisions a day: *review this PR, fix that bug, investigate that CI failure, audit this security label.* For most teams, that routing lives in Slack threads and muscle memory. AI coding assistants made it worse — now everyone has **more** decisions, not fewer, and nobody can describe *why* a given agent was trusted with a given task.
+A GitHub repo with issues, code reviews, CI, and a Linear board generates dozens of decisions a day: *review this change, fix this bug, investigate this failure, audit this security request.* For most teams, that criteria lives in Slack threads and muscle memory. AI tools made it worse — now everyone has **more** decisions, not fewer, and nobody can describe *why* a given AI was the right one for a given task.
 
 ## What we structured
 
-One file: `WORKFLOW.md`.
+A single text file anyone can read and review: `WORKFLOW.md`.
 
-A YAML block that makes the routing legible to both humans and machines:
+A text block that makes the criteria legible for both humans and machines:
 
 ```yaml
 templates:
@@ -47,28 +53,28 @@ agents:
     default:  quick-fix
 ```
 
-Everything the organization knows about *"which agent runs on which signal"* now lives in a single commit-able, reviewable, diffable artifact. **Tribal → legible in one file.**
+Everything the organization knows about *"which AI handles each situation"* now lives in a file anyone can read, review, and compare version against version. **The knowledge from one head, now in a file.**
 
 ## What we shipped
 
-- **18+ built-in agent definitions** — coder, reviewer, architect, security-architect, tester, and more
-- **Worktree isolation** — every agent runs in its own git worktree; no cross-contamination
-- **Review gate** — every change passes automated code review + tests + security scan before commit
-- **Dual tracker support** — GitHub webhooks + Linear's native Agent API (using `createAgentActivity`, not `createComment`)
-- **Safety-first runtime** — NDJSON permissions stream, conversation compaction, overload retries, graceful `stop` command on any PR or issue
-- **Library surface** — ships as both a service and a typed TypeScript library, with 6 subpath exports
+- **18+ AI roles ready** — coder, reviewer, architect, security specialist, tester, and more
+- **Each AI in its own workspace** — no stepping on each other's work, no cross-contamination
+- **Human review before every important change** — every change passes automated review (code, tests, security) before approval
+- **Works on the tools you already use** — GitHub and Linear, not a separate platform
+- **Designed with safety in mind** — visible permissions system, smart handling of long conversations, automatic retries, and a `stop` command accessible from any issue or review
+- **Ships two ways** — as a ready-to-use service *or* as a library your team can integrate
 
-## Receipts
+## Evidence
 
 From v0.2.0 to v0.4.0 in four weeks. Milestones include:
 
-- Skill-based event routing replaced hardcoded branching
-- Coordinator-only dispatch consolidated three paths into one — zero dead code
-- `WORKFLOW.md` became the single source of truth — no env-var fallback
-- Branded types (PlanId, WorkItemId, ExecId, AgentSessionId) with audit findings applied
+- The system learns to use new tools as it needs them — replacing hard rules that were in the code
+- A single entry point consolidated three paths into one — zero dead code
+- `WORKFLOW.md` became the only source of truth, no config shortcuts
+- Typed identifiers (PlanId, WorkItemId, ExecId, AgentSessionId) with audit findings applied
 
-Changelog and commits are public — you don't have to take my word for it.
+Changelog and commits are public — you don't have to take our word for it.
 
 ## What this proves
 
-If you've shipped anything with Cursor, Bolt, or Lovable and you're one *"which agent did what?"* incident away from losing confidence in your codebase, this is what **legibility as infrastructure** looks like. Not a methodology — a file anyone can read.
+If you've already built something with Cursor, Bolt, or Lovable and you're one *"what did each AI do and why?"* incident away from losing confidence in your code, this is what **written knowledge, not lost** actually means. Not a methodology — a file anyone can read.

@@ -2,6 +2,26 @@
 
 All notable changes to the Automata website are documented here. Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/); versions use the 4-digit `MAJOR.MINOR.PATCH.MICRO` scheme.
 
+## [0.1.4.0] - 2026-05-30
+
+### Changed
+
+- **EN copy rewritten for non-technical buyers** as a first-class draft (not a literal translation of ES). Symmetric to the ES rewrite in v0.1.3.0 — friends who validated the new ES voice approved porting the same softening to EN. Voice and ladder structure preserved; vocabulary swapped consistently across the homepage, capabilities page, case studies, and `/en/cases` index. Load-bearing replacements: "production AI agents" → "AI that does real work", "review gates" / "scoped authority" / "simulation-before-execute" / "traceability" / "blast radius" → plain-language equivalents ("a human approves every important step", "limited permissions", "preview before applying", "a log of every decision", "how big can the damage get"), "Framework-agnostic" pillar → "We don't lock you into a platform", "Legibility before magic" pillar → "Written processes, not in heads", "Tribal → legible in one file" → "The knowledge from one head, now in a file".
+- **EN capabilities page (`/en/capabilities`) restructured outcome-first** to match `/capacidades`. The four `CapabilityGroup` titles flipped from mechanism (`Agent orchestration`, `RAG & knowledge`, `Autonomous agent security`, `Production infrastructure`) to outcomes (`AI that does real work, without constant supervision`, `Finds answers in your documents — without making things up`, `AI that stays in its lane`, `Works where your team already works, not on a separate platform`). Plain-language bullets on top; original technical bullets demoted into collapsed `<details>` blocks via the `details[]` prop landed in v0.1.3.0, with `detailsLabel="Technical details"` passed explicitly on every EN call to override the ES default.
+- **EN maturity ladder names softened** to mirror ES: `Tribal` → `In heads`, `Legible` → `Written`, `Operating` → `In real use`, `Adaptive` → `Watchful`, `Self-improving` → `Improves with use`. Quotes and signals stay diagnostic.
+- **EN footer tagline** (every `/en/*` page, via `src/i18n/ui.ts`) — `"Production AI agents — with review gates, not vibes."` → `"AI that does real work — with a human approving every important step."`.
+- **EN anti-list voice** switched from singular ("I don't build…") to plural ("We don't build…") to match the agency-scale first-person plural used throughout the rest of the site.
+- **EN case-studies index status strings** softened: `OSS · MIT · v0.4.0` → `Open source · MIT · v0.4.0`; `Production · BUSL · v0.2.0` → `In real customer use · v0.2.0`.
+
+### Added
+
+- **EN case studies open with a new `## Summary — for non-technical readers` block**, mirroring the ES `En resumen — para no-técnicos` intro added in v0.1.3.0. `tapioca-en.mdx` additionally gains a `## Technical evidence` section that corrals all crypto-specific jargon (ZeroDev Kernel V3, EIP-7702, ERC-4337, AES-256-GCM, Morpho/YO/Aave/Moonwell) into a clearly-labeled section non-crypto readers can skip.
+
+### Notes
+
+- No code-collection schema or component changes — `CapabilityGroup.astro`'s `details[]` / `detailsLabel?` props (added in v0.1.3.0) were already shared across both locales; the EN side just started using them this pass.
+- `slugTranslations` in `src/i18n/ui.ts` already mapped the relevant routes — no new entries needed.
+
 ## [0.1.3.1] - 2026-05-26
 
 ### Security
